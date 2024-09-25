@@ -95,12 +95,17 @@ class Auth {
     console.log({fullUrl});
     console.log({failureUrl});
     const { account } = await createAdminClient();
-    const redirectUrl = await account.createOAuth2Token(
+    let redirectUrl = null
+    try {
+      redirectUrl = await account.createOAuth2Token(
       OAuthProvider.Github,
       fullUrl, // Callback URL for success
       failureUrl, // Callback URL for failure
       ["public_repo", "user"],
     );
+    } catch (error) {
+      console.log({error});
+    }
 
     console.log({redirectUrl});
     return redirectUrl;
