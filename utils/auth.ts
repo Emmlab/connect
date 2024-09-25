@@ -91,8 +91,8 @@ class Auth {
     "use server";
     const headersList = headers();
     const fullUrl = headersList.get("referer") || "";
-    console.log({fullUrl});
     const failureUrl = `${fullUrl}failure`;
+    console.log({fullUrl});
     console.log({failureUrl});
     const { account } = await createAdminClient();
     const redirectUrl = await account.createOAuth2Token(
@@ -101,6 +101,8 @@ class Auth {
       failureUrl, // Callback URL for failure
       ["public_repo", "user"],
     );
+
+    console.log({redirectUrl});
     return redirectUrl;
   }
 
