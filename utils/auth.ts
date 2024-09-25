@@ -92,8 +92,8 @@ class Auth {
     const { account } = await createAdminClient();
     const redirectUrl = await account.createOAuth2Token(
       OAuthProvider.Github,
-      "http://localhost:3000/", // Callback URL for success
-      "http://localhost:3000/?failure=true", // Callback URL for failure
+      process.env.NEXT_PUBLIC_APPWRITE_GITHUB_OAUTH_SUCCESS_URL, // Callback URL for success
+      process.env.NEXT_PUBLIC_APPWRITE_GITHUB_OAUTH_FAILURE_URL, // Callback URL for failure
       ["public_repo", "user"],
     );
     return redirectUrl;

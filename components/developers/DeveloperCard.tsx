@@ -36,7 +36,7 @@ const DeveloperCard = ({
       className="flex items-center gap-2 rounded-md py-4 px-2 border border-slate-400 cursor-pointer"
       onMouseDown={() => router.push(profileUrl)}
     >
-      <div className="rounded-full w-[45px] h-[45px]">
+      <div className="rounded-full w-[45px] h-[45px] drop-shadow-md">
         <Avvvatars
           style="shape"
           value={name || "Github Username"}
