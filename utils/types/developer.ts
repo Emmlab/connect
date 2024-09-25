@@ -1,4 +1,4 @@
-import * as z from 'zod';
+import * as z from "zod";
 
 // AUTH/DEVELOPER/PROFILE
 export type DeveloperType = {
@@ -12,8 +12,8 @@ export type DeveloperType = {
 
 export const developerNameFormSchema = z.object({
   name: z.string().min(2, {
-    message: 'Field must be at least 2 characters.',
-  })
+    message: "Field must be at least 2 characters.",
+  }),
 });
 
 export type GithubDeveloperType = {
@@ -24,9 +24,9 @@ export type GithubDeveloperType = {
       avatar_url: string;
       url: string;
       type: string;
-    }
-  ]
-}
+    },
+  ];
+};
 
 export type GithubDeveloperRepositoriesType = {
   id: number;
@@ -35,4 +35,4 @@ export type GithubDeveloperRepositoriesType = {
   description: string;
   created_at: string;
   language: string;
-}
+};

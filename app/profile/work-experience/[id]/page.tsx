@@ -1,12 +1,7 @@
 import React from "react";
-import EditWorkExperienceForm from '@/components/profile/WorkExperience/EditWorkExperienceForm';
-import { getWorkExperienceItemAction } from '@/utils/actions/';
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query';
-
+import EditWorkExperienceForm from "@/components/profile/WorkExperience/EditWorkExperienceForm";
+import { getWorkExperienceItemAction } from "@/utils/actions/";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 
 /**
  * The function `EditWorkExperiencePage` prefetches work experience data using a
@@ -23,7 +18,7 @@ async function EditWorkExperiencePage({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['workExperience', params.id],
+    queryKey: ["workExperience", params.id],
     queryFn: () => getWorkExperienceItemAction(params.id),
   });
 

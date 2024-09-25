@@ -1,11 +1,10 @@
 import React from "react";
-import Developers from '@/components/developers/Developers';
+import Developers from "@/components/developers/Developers";
 import {
   dehydrate,
   HydrationBoundary,
-  QueryClient
-} from '@tanstack/react-query';
-
+  QueryClient,
+} from "@tanstack/react-query";
 
 /**
  * The `DevelopersPage` function initializes a `queryClient` and renders a
@@ -15,12 +14,12 @@ import {
  */
 const DevelopersPage = async () => {
   const queryClient = new QueryClient();
-  
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Developers />
     </HydrationBoundary>
   );
-}
+};
 
 export default DevelopersPage;

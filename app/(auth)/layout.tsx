@@ -1,6 +1,5 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from "react";
 import Navbar from "@/components/layout/Navbar/";
-
 
 /**
  * The `layout` function renders a main layout with a Navbar and a content
@@ -16,11 +15,9 @@ const layout = ({ children }: PropsWithChildren) => {
   return (
     <main>
       <Navbar />
-      <div className="mx-auto py-4 sm:px-16 lg:px-24 px-4">
-        {children}
-      </div>
+      <div className="mx-auto py-4 sm:px-16 lg:px-24 px-4">{children}</div>
     </main>
   );
-}
+};
 
 export default layout;

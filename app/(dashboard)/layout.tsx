@@ -1,6 +1,5 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from "react";
 import Navbar from "@/components/layout/Navbar/";
-
 
 /**
  * The `layout` function renders a main layout with a Navbar and a content
@@ -21,6 +20,6 @@ const layout = ({ children }: PropsWithChildren) => {
       </div>
     </main>
   );
-}
+};
 
 export default layout;

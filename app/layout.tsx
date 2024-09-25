@@ -4,7 +4,8 @@ import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "GitConnect",
-  description: "GitConnect allows developers to  create a developer profile/portfolio, share posts and get help from others developers",
+  description:
+    "GitConnect allows developers to  create a developer profile/portfolio, share posts and get help from others developers",
 };
 
 /**
@@ -24,10 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <html lang="en" suppressHydrationWarning>
-        <body>
-          <Providers>{children}</Providers>
-        </body>
-     </html>
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
   );
 }

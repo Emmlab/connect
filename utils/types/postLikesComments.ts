@@ -1,4 +1,4 @@
-import * as z from 'zod';
+import * as z from "zod";
 
 // POST COMMENTS
 export type PostCommentType = {
@@ -8,13 +8,13 @@ export type PostCommentType = {
   comment: string;
   developerId: string;
   developerName: string;
-  post?: string,
-}
+  post?: string;
+};
 
 export const postCommentFormSchema = z.object({
   comment: z.string().min(2, {
-    message: 'Field must be at least 2 characters.',
-  })
+    message: "Field must be at least 2 characters.",
+  }),
 });
 
 export type PostCommentFormType = z.infer<typeof postCommentFormSchema>;
@@ -25,4 +25,4 @@ export type PostLikeType = {
   $createdAt: string;
   $updatedAt: string;
   developerId: string;
-}
+};

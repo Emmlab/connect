@@ -1,13 +1,12 @@
 import React from "react";
 import CreatePostForm from "../../../components/posts/CreatePostForm";
-import Posts from '../../../components/posts/Posts';
+import Posts from "../../../components/posts/Posts";
 import {
   dehydrate,
   HydrationBoundary,
-  QueryClient
-} from '@tanstack/react-query';
-import { getPostsAction } from '@/utils/actions/';
-
+  QueryClient,
+} from "@tanstack/react-query";
+import { getPostsAction } from "@/utils/actions/";
 
 /**
  * The `PostsPage` function prefetches posts data, dehydrates the query client
@@ -20,16 +19,16 @@ const PostsPage = async () => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['posts', 1],
-    queryFn: () => getPostsAction({ page: 1}),
+    queryKey: ["posts", 1],
+    queryFn: () => getPostsAction({ page: 1 }),
   });
-  
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <CreatePostForm />
       <Posts />
     </HydrationBoundary>
   );
-}
+};
 
 export default PostsPage;
