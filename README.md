@@ -1,4 +1,4 @@
-A web application designed to empower developers by providing a platform to showcase their skills, connect with others, and seek assistance.
+A web application designed to empower developers by providing a platform to showcase their skills, connect with others, and seek assistance. You can access the live app [here](https://connect-lime-two.vercel.app/).
 
 ### Key Features
 
