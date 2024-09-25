@@ -96,7 +96,7 @@ class Auth {
     const redirectUrl = await account.createOAuth2Token(
       OAuthProvider.Github,
       fullUrl, // Callback URL for success
-      `${fullUrl}/failure`, // Callback URL for failure
+      `${fullUrl}failure`, // Callback URL for failure
       ["public_repo", "user"],
     );
     return redirectUrl;
