@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+A web application designed to empower developers by providing a platform to showcase their skills, connect with others, and seek assistance.
 
-## Getting Started
+### Key Features
 
-First, run the development server:
+- Github Authentication: Signup/Login using appwrite github OAuth
+- Developer Profiles: List/create/update/delete personal details, education, work experience and github repositories
+- Developer Community Posts: create/delete posts, create/delete comments and like/dislike
+
+### Technologies Used
+
+- Next.js: A popular React framework for building server-rendered and statically generated web applications.
+- TypeScript: A statically typed superset of JavaScript that adds optional types to improve code quality and maintainability.
+- appwrite(github OAuth, Database, Functions): A backend-as-a-service platform for building web and mobile applications.
+- @tanstack/react-query: A powerful data fetching library for React applications.
+- react-hook-form: A library for building forms in React with validation and error handling.
+- zod: A validation library for TypeScript.
+- tailwind css: A utility-first CSS framework for rapid UI development.
+- shadcn A collection of UI components built with Tailwind CSS.
+- lucide-react: A set of React icons for building beautiful user interfaces.
+
+Open [GET developers function repository](https://github.com/Emmlab/connect-users-function) for the appwrite function implimentation
+
+### Setup Requirements
+
+- node at least v10
+- npm
+- appwrite account
+- appwrite database. More information on `./schema.txt`
+- appwrite get developers function. More information on [GET developers function repository](https://github.com/Emmlab/connect-users-function)
+- env variables. More information on `env.example`
+- Your favourite browser
+
+### Getting Started
+
+- Update environment variables in .env file. Reference on `env.example`
+
+- Install the packages
+
+```bash
+npm install
+```
+
+- Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+To learn more about the application, reach out to me through:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- <beja.emmanuel@gmail.com> - My official email.

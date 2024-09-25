@@ -1,0 +1,135 @@
+// appwrite database collections
+// Posts attributes
+  message: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+  likesCount: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+  disLikesCount: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+  developerId: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+
+// PostComments attributes
+  comment: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+  developerId: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+  post: 
+    Type: One-Way Relationship > Relationship with post
+    Related collection: posts
+    Relation: Many to one
+    On deleting a document: Cascade - delete all realated documents
+    Required: false
+    Default Value: '-' // leave empty
+  
+
+
+// PostLikes attributes
+  developerId: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+  post: 
+    Type: One-Way Relationship > Relationship with post
+    Related collection: posts
+    Relation: Many to one
+    On deleting a document: Cascade - delete all realated documents
+    Required: false
+    Default Value: '-' // leave empty
+  
+
+
+// PostDisLikes attributes
+  developerId: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+  post: 
+    Type: One-Way Relationship > Relationship with post
+    Related collection: posts
+    Relation: Many to one
+    On deleting a document: Cascade - delete all realated documents
+    Required: false
+    Default Value: '-' // leave empty
+  
+
+
+// WorkExperience attributes
+  company: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+  role: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+  description: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+  startDate: 
+    Type: DateTime
+    Required: true
+    Default Value: '-' // leave empty
+  
+  endDate: 
+    Type: DateTime
+    Required: true
+    Default Value: '-' // leave empty
+  
+  developerId: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+
+
+// Education attributes
+  school: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+  course: 
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
+  startDate: 
+    Type: DateTime
+    Required: true
+    Default Value: '-' // leave empty
+  
+  endDate: 
+    Type: DateTime
+    Required: true
+    Default Value: '-' // leave empty
+
+  developerId:
+    Type: String
+    Required: true
+    Default Value: '-' // leave empty
+  
