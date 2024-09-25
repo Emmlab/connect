@@ -59,15 +59,17 @@ const EducationCard = ({ educationItem }: { educationItem: EducationType }) => {
             hide add education button if user has no access */}
         {!developerId ? (
           <div className="flex items-center gap-2 my-2 md:pl-[48px]">
-            <CustomButton
-              icon={<Pencil className="h-[18px]" />}
-              text=""
-              handleClick={() =>
-                router.push(`/profile/education/${educationItem.$id}`)
-              }
-              isPending={false}
-              className="h-fit w-fit px-2 py-1"
-            />
+            {!isPendingDeleteEducation ? (
+              <CustomButton
+                icon={<Pencil className="h-[18px]" />}
+                text=""
+                handleClick={() =>
+                  router.push(`/profile/education/${educationItem.$id}`)
+                }
+                isPending={false}
+                className="h-fit w-fit px-2 py-1"
+              />
+            ) : null}
             <CustomButton
               icon={<Trash2 className="h-[18px]" />}
               text=""
@@ -75,6 +77,7 @@ const EducationCard = ({ educationItem }: { educationItem: EducationType }) => {
                 educationItem && mutateDeleteEducation(educationItem.$id)
               }
               isPending={isPendingDeleteEducation}
+              isDelete
               className="h-fit w-fit px-2 py-1"
             />
           </div>

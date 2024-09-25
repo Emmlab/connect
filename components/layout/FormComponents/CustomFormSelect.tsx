@@ -33,7 +33,9 @@ const CustomFormSelect = ({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="capitalize">{labelText || name}</FormLabel>
+          <FormLabel className="capitalize" htmlFor={name}>
+            {labelText || name}
+          </FormLabel>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
               <SelectTrigger>

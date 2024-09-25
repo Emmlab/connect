@@ -124,6 +124,7 @@ const PostCard = ({ post }: { post: PostType }) => {
               text=""
               handleClick={() => mutateDeletePost(post.$id)}
               isPending={isPendingDeletePost}
+              isDelete
               className="h-fit w-fit px-2 py-1"
             />
           </div>
