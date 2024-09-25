@@ -1,6 +1,10 @@
 import React from "react";
 import CreateWorkExperienceForm from "@/components/profile/WorkExperience/CreateWorkExperienceForm";
-import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { getWorkExperienceAction } from "@/utils/actions/";
 
 /**

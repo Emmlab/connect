@@ -37,7 +37,9 @@ const CustomFormField = ({
       render={({ field }) => (
         <FormItem>
           {!hideLabel ? (
-            <FormLabel className="capitalize">{label || name}</FormLabel>
+            <FormLabel className="capitalize" htmlFor={name}>
+              {label || name}
+            </FormLabel>
           ) : null}
           <FormControl>
             {inputType === "textarea" ? (
@@ -45,6 +47,8 @@ const CustomFormField = ({
                 placeholder={`${placeholder || ""}`}
                 className={className || ""}
                 disabled={disabled}
+                autoComplete="on"
+                id={name}
                 {...field}
               />
             ) : (
@@ -53,6 +57,8 @@ const CustomFormField = ({
                 placeholder={`${placeholder || ""}`}
                 className={className || ""}
                 disabled={disabled}
+                autoComplete="on"
+                id={name}
                 {...field}
               />
             )}

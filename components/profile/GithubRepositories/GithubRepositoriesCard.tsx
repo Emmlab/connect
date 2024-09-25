@@ -54,7 +54,7 @@ const GithubRepositoriesCard = ({
     "c#": csharp,
     "c++": cplusplus,
     c: c,
-    css: css
+    css: css,
   };
   const language = repositoryItem?.language?.toLowerCase() || null;
   return (

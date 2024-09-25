@@ -38,7 +38,7 @@ const CommentCard = ({ comment }: { comment: PostCommentType }) => {
       <CardHeader className="flex gap-2 py-2">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="rounded-full w-[40px] h-[40px] shadow-lg">
+            <div className="rounded-full w-[40px] h-[40px] shadow-lg flex items-center justify-center">
               <Avvvatars
                 style="shape"
                 value={comment?.developerName || "Github Username"}
@@ -66,6 +66,7 @@ const CommentCard = ({ comment }: { comment: PostCommentType }) => {
                 comment && mutateDeletePostComment(comment.$id as string)
               }
               isPending={isPendingDeletePostComment}
+              isDelete
             />
           </div>
         </CardTitle>

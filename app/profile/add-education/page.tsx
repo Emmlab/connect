@@ -1,6 +1,10 @@
 import React from "react";
 import CreateEducationForm from "@/components/profile/Education/CreateEducationForm";
-import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { getEducationAction } from "@/utils/actions/";
 
 /**

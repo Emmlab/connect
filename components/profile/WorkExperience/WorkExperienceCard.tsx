@@ -69,17 +69,19 @@ const WorkExperienceCard = ({
         {!developerId ? (
           <div className="flex items-center gap-2 my-2 md:pl-[48px]">
             {/* edit button */}
-            <CustomButton
-              icon={<Pencil className="h-[18px]" />}
-              text=""
-              handleClick={() =>
-                router.push(
-                  `/profile/work-experience/${workExperienceItem.$id}`,
-                )
-              }
-              isPending={false}
-              className="h-fit w-fit px-2 py-1"
-            />
+            {!isPendingDeleteWorkExperience ? (
+              <CustomButton
+                icon={<Pencil className="h-[18px]" />}
+                text=""
+                handleClick={() =>
+                  router.push(
+                    `/profile/work-experience/${workExperienceItem.$id}`,
+                  )
+                }
+                isPending={false}
+                className="h-fit w-fit px-2 py-1"
+              />
+            ) : null}
             {/* delete button */}
             <CustomButton
               icon={<Trash2 className="h-[18px]" />}
@@ -88,6 +90,7 @@ const WorkExperienceCard = ({
                 mutateDeleteWorkExperience(workExperienceItem.$id)
               }
               isPending={isPendingDeleteWorkExperience}
+              isDelete
               className="h-fit w-fit px-2 py-1"
             />
           </div>
