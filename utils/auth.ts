@@ -1,13 +1,16 @@
 import { cookies } from "next/headers";
-import { OAuthProvider } from 'node-appwrite';
+import { OAuthProvider } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "./appwrite";
-import { DeveloperType, GithubDeveloperType, GithubDeveloperRepositoriesType } from './types/developer'
+import {
+  DeveloperType,
+  GithubDeveloperType,
+  GithubDeveloperRepositoriesType,
+} from "./types/developer";
 
 type SessionCookie = {
   name: string;
   value: string;
-}
-
+};
 
 /* The Auth class provides methods for user authentication, session management, GitHub
 profile retrieval, GitHub repository retrieval, GitHub OAuth authentication, and session deletion. */
@@ -20,44 +23,46 @@ class Auth {
   }
 
   // get authenticated user session
-  getSession () {
-      this.sessionCookie = cookies().get("session") as SessionCookie;
-      return this.sessionCookie 
+  getSession() {
+    this.sessionCookie = cookies().get("session") as SessionCookie;
+    return this.sessionCookie;
   }
 
-  async getDeveloper () {
-      this.getSession()
-      try {
-        if (this.sessionCookie) {
-          const { account } = await createSessionClient(
-              this.sessionCookie.value
-          );
-          this.user = await account.get();
-        } else {
-          this.user = null;
-        }
-      } catch {
-          this.user = null;
-          this.sessionCookie = null;
+  async getDeveloper() {
+    this.getSession();
+    try {
+      if (this.sessionCookie) {
+        const { account } = await createSessionClient(this.sessionCookie.value);
+        this.user = await account.get();
+      } else {
+        this.user = null;
       }
-      return this.user;
+    } catch {
+      this.user = null;
+      this.sessionCookie = null;
+    }
+    return this.user;
   }
-  
+
   async updateDeveloperName(developerId: string, name: string) {
     "use server";
-    const { users } = await createAdminClient()
+    const { users } = await createAdminClient();
     await users.updateName(
-        developerId, // userId
-        name // name
+      developerId, // userId
+      name, // name
     );
-    return null
+    return null;
   }
 
   // get github profile using email
-  async getGithubDeveloperProfile(email: string): Promise<GithubDeveloperType | null> {
+  async getGithubDeveloperProfile(
+    email: string,
+  ): Promise<GithubDeveloperType | null> {
     try {
-      const response = await fetch(`https://api.github.com/search/users?q=${email}`);
-      const data = await response.json()
+      const response = await fetch(
+        `https://api.github.com/search/users?q=${email}`,
+      );
+      const data = await response.json();
       return data;
     } catch (error) {
       console.error(error);
@@ -66,10 +71,14 @@ class Auth {
   }
 
   // get github repositories using email
-  async getGithubDeveloperRepositories(name: string): Promise<GithubDeveloperRepositoriesType[] | null> {
+  async getGithubDeveloperRepositories(
+    name: string,
+  ): Promise<GithubDeveloperRepositoriesType[] | null> {
     try {
-      const response = await fetch(`https://api.github.com/users/${name}/repos`);
-      const data = await response.json()
+      const response = await fetch(
+        `https://api.github.com/users/${name}/repos`,
+      );
+      const data = await response.json();
       return data;
     } catch (error) {
       console.error(error);
@@ -78,49 +87,53 @@ class Auth {
   }
 
   // Signup/Login using github OAuth
-  async githubAuth()  {
-      "use server";
-      const { account } = await createAdminClient();
-      const redirectUrl = await account.createOAuth2Token(
-          OAuthProvider.Github,
-          "http://localhost:3000/", // Callback URL for success
-          "http://localhost:3000/?failure=true", // Callback URL for failure
-          ['public_repo', 'user']
-      );
-      return redirectUrl;
+  async githubAuth() {
+    "use server";
+    const { account } = await createAdminClient();
+    const redirectUrl = await account.createOAuth2Token(
+      OAuthProvider.Github,
+      "http://localhost:3000/", // Callback URL for success
+      "http://localhost:3000/?failure=true", // Callback URL for failure
+      ["public_repo", "user"],
+    );
+    return redirectUrl;
   }
 
   // github OAuth callback function
-  async githubAuthCallback({ userId, secret }: { userId: string; secret: string; }) {
+  async githubAuthCallback({
+    userId,
+    secret,
+  }: {
+    userId: string;
+    secret: string;
+  }) {
     const { account } = await createAdminClient();
     const session = await account.createSession(userId, secret);
 
-    cookies().set('session', session.secret, {
+    cookies().set("session", session.secret, {
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: "strict",
       secure: true,
       expires: new Date(session.expire),
-      path: '/',
+      path: "/",
     });
   }
 
   // delete logged in user session
-  async deleteSession ()  {
-      "use server";
-      this.getSession()
-      if (this.sessionCookie) {
-        const { account } = await createSessionClient(
-            this.sessionCookie.value
-        );
-        await account.deleteSession("current");
-      }
+  async deleteSession() {
+    "use server";
+    this.getSession();
+    if (this.sessionCookie) {
+      const { account } = await createSessionClient(this.sessionCookie.value);
+      await account.deleteSession("current");
+    }
 
-      cookies().delete("session");
-      this.user = null;
-      this.sessionCookie = null;
+    cookies().delete("session");
+    this.user = null;
+    this.sessionCookie = null;
   }
 }
 
-const auth = new Auth()
+const auth = new Auth();
 
 export default auth;

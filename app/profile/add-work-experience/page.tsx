@@ -1,7 +1,7 @@
 import React from "react";
-import CreateWorkExperienceForm from '@/components/profile/WorkExperience/CreateWorkExperienceForm';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { getWorkExperienceAction } from '@/utils/actions/';
+import CreateWorkExperienceForm from "@/components/profile/WorkExperience/CreateWorkExperienceForm";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { getWorkExperienceAction } from "@/utils/actions/";
 
 /**
  * The AddWorkExperiencePage function prefetches work experience data and renders a form for creating
@@ -13,7 +13,7 @@ import { getWorkExperienceAction } from '@/utils/actions/';
 const AddWorkExperiencePage = async () => {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ['workExperience', 1],
+    queryKey: ["workExperience", 1],
     queryFn: () => getWorkExperienceAction({ page: 1 }),
   });
 
@@ -22,6 +22,6 @@ const AddWorkExperiencePage = async () => {
       <CreateWorkExperienceForm />
     </HydrationBoundary>
   );
-}
+};
 
 export default AddWorkExperiencePage;

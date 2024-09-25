@@ -1,25 +1,33 @@
 import React from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar"
-import { FormLabel } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { FormLabel } from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { Calendar as CalendarIcon } from "lucide-react";
-
 
 type CustomDateRangePickerProps = {
   className?: string;
   label?: string;
   date: DateRange;
   setDate?: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
-}
-const CustomDateRangePicker = ({ className, label, date, setDate }: CustomDateRangePickerProps) => {
+};
+const CustomDateRangePicker = ({
+  className,
+  label,
+  date,
+  setDate,
+}: CustomDateRangePickerProps) => {
   return (
     <div>
       <div>
-        <FormLabel className='capitalize'>{label || "Date Range"}</FormLabel>
+        <FormLabel className="capitalize">{label || "Date Range"}</FormLabel>
       </div>
       <div className={cn("grid gap-2", className)}>
         <Popover>
@@ -29,7 +37,7 @@ const CustomDateRangePicker = ({ className, label, date, setDate }: CustomDateRa
               variant={"outline"}
               className={cn(
                 "w-[300px] justify-start text-left font-normal",
-                !date && "text-muted-foreground"
+                !date && "text-muted-foreground",
               )}
             >
               <CalendarIcon className="mr-2 h-4 w-4" />
@@ -60,7 +68,7 @@ const CustomDateRangePicker = ({ className, label, date, setDate }: CustomDateRa
         </Popover>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CustomDateRangePicker
+export default CustomDateRangePicker;

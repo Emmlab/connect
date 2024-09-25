@@ -1,4 +1,4 @@
-'use server';
+"use server";
 import {
   getDeveloper,
   authenticateAndRedirect,
@@ -8,33 +8,28 @@ import {
   developerLogoutAction,
   updateDeveloperName,
   getGithubDeveloperRepositories,
-} from './developer';
+} from "./developer";
 import {
   getEducationAction,
   getEducationItemAction,
   createEducationAction,
   updateEducationItemAction,
   deleteEducationItemAction,
-} from './education';
+} from "./education";
 import {
   getWorkExperienceAction,
   getWorkExperienceItemAction,
   createWorkExperienceAction,
   updateWorkExperienceItemAction,
   deleteWorkExperienceItemAction,
-} from './workExperience';
-import {
-  createPostAction,
-  getPostsAction,
-  deletePostAction,
-} from './posts';
+} from "./workExperience";
+import { createPostAction, getPostsAction, deletePostAction } from "./posts";
 import {
   createPostCommentAction,
   deletePostCommentAction,
   postLikeAction,
-  postDisLikeAction
-} from './postLikesComments'
-
+  postDisLikeAction,
+} from "./postLikesComments";
 
 export {
   // AUTH
@@ -66,5 +61,5 @@ export {
   createPostCommentAction,
   deletePostCommentAction,
   postLikeAction,
-  postDisLikeAction
-}
+  postDisLikeAction,
+};

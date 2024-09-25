@@ -1,7 +1,7 @@
 import React from "react";
-import CreateEducationForm from '@/components/profile/Education/CreateEducationForm';
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { getEducationAction } from '@/utils/actions/';
+import CreateEducationForm from "@/components/profile/Education/CreateEducationForm";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { getEducationAction } from "@/utils/actions/";
 
 /**
  * The AddEducationPage function prefetches education data and renders a form for creating new
@@ -14,7 +14,7 @@ import { getEducationAction } from '@/utils/actions/';
 const AddEducationPage = async () => {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
-    queryKey: ['education', 1],
+    queryKey: ["education", 1],
     queryFn: () => getEducationAction({ page: 1 }),
   });
 
@@ -23,6 +23,6 @@ const AddEducationPage = async () => {
       <CreateEducationForm />
     </HydrationBoundary>
   );
-}
+};
 
 export default AddEducationPage;

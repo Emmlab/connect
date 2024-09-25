@@ -1,5 +1,5 @@
-import * as z from 'zod';
-import { PostCommentType } from './postLikesComments'
+import * as z from "zod";
+import { PostCommentType } from "./postLikesComments";
 
 // POSTS
 export type PostType = {
@@ -18,9 +18,8 @@ export type PostType = {
 
 export const postFormSchema = z.object({
   message: z.string().min(2, {
-    message: 'Field must be at least 2 characters.',
-  })
+    message: "Field must be at least 2 characters.",
+  }),
 });
 
 export type PostFormType = z.infer<typeof postFormSchema>;
-

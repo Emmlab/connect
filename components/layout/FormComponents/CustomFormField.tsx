@@ -1,17 +1,14 @@
-
-
 import React from "react";
-import { Control, FieldValues } from 'react-hook-form';
+import { Control, FieldValues } from "react-hook-form";
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 type CustomFormFieldProps = {
   name: string;
@@ -31,32 +28,33 @@ const CustomFormField = ({
   label,
   hideLabel,
   className,
-  disabled
+  disabled,
 }: CustomFormFieldProps) => {
   return (
     <FormField
       control={control as Control<FieldValues>}
       name={name}
-      
       render={({ field }) => (
         <FormItem>
           {!hideLabel ? (
-            <FormLabel className='capitalize'>{label || name}</FormLabel>
+            <FormLabel className="capitalize">{label || name}</FormLabel>
           ) : null}
           <FormControl>
-            {inputType === 'textarea' ? (
+            {inputType === "textarea" ? (
               <Textarea
-                placeholder={`${placeholder || ''}`}
+                placeholder={`${placeholder || ""}`}
                 className={className || ""}
                 disabled={disabled}
-                {...field} />
+                {...field}
+              />
             ) : (
               <Input
-                type={`${inputType || 'text'}`}
-                placeholder={`${placeholder || ''}`}
+                type={`${inputType || "text"}`}
+                placeholder={`${placeholder || ""}`}
                 className={className || ""}
                 disabled={disabled}
-                {...field} />
+                {...field}
+              />
             )}
           </FormControl>
           <FormMessage />
@@ -64,6 +62,6 @@ const CustomFormField = ({
       )}
     />
   );
-}
+};
 
-export default CustomFormField
+export default CustomFormField;

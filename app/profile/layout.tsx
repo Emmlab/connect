@@ -1,5 +1,5 @@
-"use client"
-import React, { PropsWithChildren } from 'react';
+"use client";
+import React, { PropsWithChildren } from "react";
 import Navbar from "@/components/layout/Navbar/";
 import BackButton from "@/components/layout/BackButton";
 
@@ -27,6 +27,6 @@ const layout = ({ children }: PropsWithChildren) => {
       </div>
     </main>
   );
-}
+};
 
 export default layout;

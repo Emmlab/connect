@@ -1,8 +1,7 @@
-import React from "react"
+import React from "react";
 import { useRouter } from "next/navigation";
-import Avvvatars from 'avvvatars-react';
-import { DeveloperType } from '@/utils/types/developer';
-
+import Avvvatars from "avvvatars-react";
+import { DeveloperType } from "@/utils/types/developer";
 
 /**
  * The `DeveloperCard` component generates a clickable card displaying a developer's name and avatar,
@@ -16,8 +15,12 @@ import { DeveloperType } from '@/utils/types/developer';
  * URL parameters. The card also includes an avatar component displaying the developer's name or a
  * default value if the name is not provided.
  */
-const DeveloperCard = ({ developer: { name, email, $id: developerId }}: { developer: DeveloperType }) => {
-  const router = useRouter()
+const DeveloperCard = ({
+  developer: { name, email, $id: developerId },
+}: {
+  developer: DeveloperType;
+}) => {
+  const router = useRouter();
 
   // add user details in url params before redirection
   const defaultParams = {
@@ -31,11 +34,12 @@ const DeveloperCard = ({ developer: { name, email, $id: developerId }}: { develo
   return (
     <div
       className="flex items-center gap-2 rounded-md py-4 px-2 border border-slate-400 cursor-pointer"
-      onMouseDown={() => router.push(profileUrl)}>
+      onMouseDown={() => router.push(profileUrl)}
+    >
       <div className="rounded-full w-[45px] h-[45px]">
         <Avvvatars
           style="shape"
-          value={name || 'Github Username'}
+          value={name || "Github Username"}
           size={42}
           shadow
           border
@@ -44,7 +48,7 @@ const DeveloperCard = ({ developer: { name, email, $id: developerId }}: { develo
       </div>
       <div className="line-clamp-1">{name}</div>
     </div>
-  )
-}
+  );
+};
 
-export default DeveloperCard
+export default DeveloperCard;
