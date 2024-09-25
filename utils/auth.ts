@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { OAuthProvider } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "./appwrite";
 import {
@@ -89,11 +89,14 @@ class Auth {
   // Signup/Login using github OAuth
   async githubAuth() {
     "use server";
+    const headersList = headers();
+    const fullUrl = headersList.get("referer") || "";
+
     const { account } = await createAdminClient();
     const redirectUrl = await account.createOAuth2Token(
       OAuthProvider.Github,
-      process.env.NEXT_PUBLIC_APPWRITE_GITHUB_OAUTH_SUCCESS_URL, // Callback URL for success
-      process.env.NEXT_PUBLIC_APPWRITE_GITHUB_OAUTH_FAILURE_URL, // Callback URL for failure
+      fullUrl, // Callback URL for success
+      `${fullUrl}/failure`, // Callback URL for failure
       ["public_repo", "user"],
     );
     return redirectUrl;
