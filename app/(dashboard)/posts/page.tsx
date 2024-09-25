@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import CreatePostForm from "../../../components/posts/CreatePostForm";
 import Posts from "../../../components/posts/Posts";
 import {
@@ -26,7 +26,9 @@ const PostsPage = async () => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <CreatePostForm />
-      <Posts />
+      <Suspense>
+        <Posts />
+      </Suspense>
     </HydrationBoundary>
   );
 };

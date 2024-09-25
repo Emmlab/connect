@@ -7,6 +7,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import { Suspense } from "react";
 
 /**
  * The Home component renders a page layout with a title, quote, and buttons for GitHub authentication
@@ -35,7 +36,9 @@ const Home = () => {
               <span className="italic">~ Donald Knuth</span>
             </p>
             <div className="flex gap-4">
-              <GithubAuthButton />
+              <Suspense>
+                <GithubAuthButton />
+              </Suspense>
             </div>
           </div>
           <div className="h-[60vh] w-full md:w-[40%] flex">

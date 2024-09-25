@@ -44,7 +44,7 @@ const CustomButton = ({
           // proceed to delete
           handleClick();
         }
-        return true
+        return true;
       });
     }
 

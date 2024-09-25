@@ -1,8 +1,12 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import WorkExperience from "@/components/profile/WorkExperience";
 
 // Profile work experience
-const WorkExperiencePage = () => <WorkExperience />;
+const WorkExperiencePage = () => (
+  <Suspense>
+    <WorkExperience />
+  </Suspense>
+);
 
 export default WorkExperiencePage;
