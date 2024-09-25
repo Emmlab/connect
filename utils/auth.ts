@@ -91,7 +91,7 @@ class Auth {
     "use server";
     const headersList = headers();
     const fullUrl = headersList.get("referer") || "";
-
+    console.log({fullUrl});
     const { account } = await createAdminClient();
     const redirectUrl = await account.createOAuth2Token(
       OAuthProvider.Github,

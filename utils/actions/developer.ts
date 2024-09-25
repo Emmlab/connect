@@ -23,6 +23,7 @@ const authenticateAndRedirect = async () => {
 const developerGithubLoginAction = async () => {
   try {
     const redirectUrl = await auth.githubAuth();
+    console.log({redirectUrl});
     return redirectUrl;
   } catch (error) {
     console.error(error);
