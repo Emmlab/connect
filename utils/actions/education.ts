@@ -21,10 +21,13 @@ const getEducationAction = async ({
   page?: number;
   developerId?: string;
 }): Promise<{
-  education: EducationType[];
-  count: number;
-  page: number;
-  totalPages: number;
+  data?: {
+    education: EducationType[];
+    count: number;
+    page: number;
+    totalPages: number;
+  };
+  error?: string;
 } | null> => {
   const developer = developerId
     ? { $id: developerId }
@@ -58,17 +61,20 @@ const getEducationAction = async ({
 
     // calculate total page count
     const totalPages = Math.ceil(total / DEFAULT_PAGE_LIMIT);
-    return { education, count: total, page, totalPages };
+    return { data: { education, count: total, page, totalPages } };
   } catch (error) {
     console.error(error);
-    return { education: [], count: 0, page: page, totalPages: 0 };
+    return {
+      data: { education: [], count: 0, page: page, totalPages: 0 },
+      error: "Something went wrong",
+    };
   }
 };
 
 // get education
 const getEducationItemAction = async (
   id: string,
-): Promise<EducationType | null> => {
+): Promise<{ data?: EducationType; error?: string }> => {
   await authenticateAndRedirect();
   const sessionCookie = auth.getSession();
   try {
@@ -94,10 +100,10 @@ const getEducationItemAction = async (
     if (!educationItem) {
       redirect("/profile/education");
     }
-    return educationItem;
+    return { data: educationItem };
   } catch (error) {
     console.error(error);
-    return null;
+    return { error: "Something went wrong." };
   }
 };
 
@@ -105,7 +111,10 @@ const getEducationItemAction = async (
 const createEducationAction = async (
   values: EducationFormType,
   dateRange: DateRange,
-) => {
+): Promise<{
+  data?: EducationType;
+  error?: string;
+}> => {
   const sessionCookie = auth.getSession();
   const developer = await authenticateAndRedirect();
   try {
@@ -135,10 +144,10 @@ const createEducationAction = async (
       endDate: document.endDate,
       developerId: document.developerId,
     };
-    return educationItem;
+    return { data: educationItem };
   } catch (error) {
     console.error(error);
-    return null;
+    return { error: "Something went wrong." };
   }
 };
 
@@ -147,7 +156,10 @@ const updateEducationItemAction = async (
   id: string,
   values: EducationFormType,
   dateRange: DateRange,
-): Promise<EducationType | null> => {
+): Promise<{
+  data?: EducationType;
+  error?: string;
+}> => {
   const sessionCookie = auth.getSession();
   try {
     const { databases } = await createSessionClient(sessionCookie.value);
@@ -168,17 +180,20 @@ const updateEducationItemAction = async (
       endDate: document.endDate,
       developerId: document.developerId,
     };
-    return educationItem;
+    return { data: educationItem };
   } catch (error) {
     console.error(error);
-    return null;
+    return { error: "Something went wrong." };
   }
 };
 
 // delete education
 const deleteEducationItemAction = async (
   id: string,
-): Promise<string | null> => {
+): Promise<{
+  data?: string;
+  error?: string;
+}> => {
   await authenticateAndRedirect();
   const sessionCookie = auth.getSession();
   try {
@@ -188,10 +203,10 @@ const deleteEducationItemAction = async (
       "Education",
       id,
     );
-    return id;
+    return { data: id };
   } catch (error) {
     console.error(error);
-    return null;
+    return { error: "Something went wrong." };
   }
 };
 

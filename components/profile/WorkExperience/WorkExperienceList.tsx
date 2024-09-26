@@ -17,13 +17,13 @@ const WorkExperienceList = () => {
 
   // get paginated work experience data
   const { data, isPending } = useQuery({
-    queryKey: ["workExperience", pageNumber],
+    queryKey: ["workExperience", pageNumber, developerId],
     queryFn: () => getWorkExperienceAction({ page: pageNumber, developerId }),
   });
 
-  const workExperience = data?.workExperience || [];
-  const page = data?.page || 0;
-  const totalPages = data?.totalPages || 0;
+  const workExperience = data?.data?.workExperience || [];
+  const page = data?.data?.page || 0;
+  const totalPages = data?.data?.totalPages || 0;
 
   // display loaders when getting work experience list
   if (isPending)

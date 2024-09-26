@@ -17,13 +17,13 @@ const EducationList = () => {
   const developerId = searchParams.get("developerId") || undefined;
 
   const { data, isPending } = useQuery({
-    queryKey: ["education", pageNumber],
+    queryKey: ["education", pageNumber, developerId],
     queryFn: () => getEducationAction({ page: pageNumber, developerId }),
   });
 
-  const education = data?.education || [];
-  const page = data?.page || 0;
-  const totalPages = data?.totalPages || 0;
+  const education = data?.data?.education || [];
+  const page = data?.data?.page || 0;
+  const totalPages = data?.data?.totalPages || 0;
 
   // display loaders when getting edutcation items
   if (isPending)

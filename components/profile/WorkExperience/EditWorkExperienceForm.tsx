@@ -45,23 +45,23 @@ const EditWorkExperienceForm = ({
 
   // update default date range
   useEffect(() => {
-    if (data?.startDate && data?.endDate) {
+    if (data?.data?.startDate && data?.data?.endDate) {
       setDateRange({
-        from: new Date(data.startDate),
-        to: new Date(data.endDate),
+        from: new Date(data.data?.startDate),
+        to: new Date(data.data?.endDate),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.startDate, data?.endDate]);
+  }, [data?.data?.startDate, data?.data?.endDate]);
 
   // handle update work experience
   const { mutate, isPending } = useMutation({
     mutationFn: (values: WorkExperienceFormType) =>
       updateWorkExperienceItemAction(workExperienceId, values, dateRange),
     onSuccess: (data) => {
-      if (!data) {
+      if (data?.error) {
         toast({
-          description: "Something went wrong",
+          description: data.error,
         });
         return;
       }
@@ -76,9 +76,9 @@ const EditWorkExperienceForm = ({
   const form = useForm<WorkExperienceFormType>({
     resolver: zodResolver(workExperienceFormSchema),
     defaultValues: {
-      company: data?.company || "",
-      role: data?.role || "",
-      description: data?.description || "",
+      company: data?.data?.company || "",
+      role: data?.data?.role || "",
+      description: data?.data?.description || "",
     },
   });
 

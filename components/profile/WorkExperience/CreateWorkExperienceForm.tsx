@@ -44,9 +44,9 @@ const CreateWorkExperienceForm = () => {
     mutationFn: (values: WorkExperienceFormType) =>
       createWorkExperienceAction(values, dateRange),
     onSuccess: (data) => {
-      if (!data) {
+      if (data?.error) {
         toast({
-          description: "Something went wrong",
+          description: data.error,
         });
         return;
       }

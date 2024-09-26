@@ -3,10 +3,10 @@ import {
   getDeveloper,
   authenticateAndRedirect,
   getDevelopersAction,
-  developerGithubLoginAction,
-  developerGithubLoginCallbackAction,
+  developerSignupAction,
+  developerLoginAction,
   developerLogoutAction,
-  updateDeveloperName,
+  updateDeveloper,
   getGithubDeveloperRepositories,
 } from "./developer";
 import {
@@ -36,10 +36,10 @@ export {
   authenticateAndRedirect,
   getDeveloper,
   getDevelopersAction,
-  developerGithubLoginAction,
-  developerGithubLoginCallbackAction,
+  developerSignupAction,
+  developerLoginAction,
   developerLogoutAction,
-  updateDeveloperName,
+  updateDeveloper,
   getGithubDeveloperRepositories,
   //EDUCATION
   getEducationAction,

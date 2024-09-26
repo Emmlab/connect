@@ -1,13 +1,13 @@
 "use client";
+import Link from "next/link";
 import Navbar from "@/components/layout/Navbar/";
-import GithubAuthButton from "@/components/auth/GithubAuthButton";
 import Developers from "@/components/developers/Developers";
+import { Button } from "@/components/ui/button";
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { Suspense } from "react";
 
 /**
  * The Home component renders a page layout with a title, quote, and buttons for GitHub authentication
@@ -35,10 +35,17 @@ const Home = () => {
               <br />
               <span className="italic">~ Donald Knuth</span>
             </p>
-            <div className="flex gap-4">
-              <Suspense>
-                <GithubAuthButton />
-              </Suspense>
+            <div className="flex gap-4 mt-4">
+              <Button asChild variant="outline" className="w-fit">
+                <Link href="/login" className="flex items-center w-full">
+                  Login
+                </Link>
+              </Button>
+              <Button asChild variant="secondary" className="w-fit">
+                <Link href="/signup" className="flex items-center w-full">
+                  Get Started
+                </Link>
+              </Button>
             </div>
           </div>
           <div className="h-[60vh] w-full md:w-[40%] flex">

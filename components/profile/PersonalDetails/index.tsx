@@ -11,8 +11,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import { useSearchParams } from "next/navigation";
-import { developerNameFormSchema } from "@/utils/types/developer";
-import { updateDeveloperName, getDeveloper } from "@/utils/actions/";
+import {
+  developerFormSchema,
+  DeveloperFormType,
+} from "@/utils/types/developer";
+import { updateDeveloper, getDeveloper } from "@/utils/actions/";
 
 const PersonalDetails = () => {
   const queryClient = useQueryClient();
@@ -27,15 +30,15 @@ const PersonalDetails = () => {
 
   // handle update developer name
   const { mutate, isPending } = useMutation({
-    mutationFn: (values: { name: string }) => updateDeveloperName(values),
+    mutationFn: (values: DeveloperFormType) => updateDeveloper(values),
     onSuccess: (data) => {
-      if (!data) {
+      if (data?.error) {
         toast({
-          description: "Something went wrong",
+          description: data.error,
         });
         return;
       }
-      toast({ description: "User name updated" });
+      toast({ description: "Account updated" });
       // update developer/developers data
       queryClient.invalidateQueries({ queryKey: ["developer"] });
       queryClient.invalidateQueries({ queryKey: ["developers"] });
@@ -53,15 +56,15 @@ const PersonalDetails = () => {
     : developerData;
 
   // initialize form
-  const form = useForm<{ name: string }>({
-    resolver: zodResolver(developerNameFormSchema),
+  const form = useForm<DeveloperFormType>({
+    resolver: zodResolver(developerFormSchema),
     defaultValues: {
-      name: developer?.name || "",
+      name: developer?.name || searchParams.get("name") || "",
     },
   });
 
   // handle submit
-  const onSubmit = (values: { name: string }) => mutate(values);
+  const onSubmit = (values: DeveloperFormType) => mutate(values);
 
   return (
     <Form {...form}>
@@ -91,14 +94,27 @@ const PersonalDetails = () => {
               {/* component accessed in unprotected routes
                 hide button if user has no access */}
               {!developerId ? (
-                <div className="mt-4">
-                  <CustomButton
-                    type="submit"
-                    className="mt-4 w-fit flex gap-x-2 items-center"
-                    isPending={isPending}
-                    text={"Submit"}
+                <>
+                  {/* optional */}
+                  <CustomFormField
+                    inputType="password"
+                    name="password"
+                    control={form.control}
                   />
-                </div>
+                  <CustomFormField
+                    inputType="password"
+                    name="confirmPassword"
+                    control={form.control}
+                  />
+                  <div className="mt-4">
+                    <CustomButton
+                      type="submit"
+                      className="mt-4 w-fit flex gap-x-2 items-center"
+                      isPending={isPending}
+                      text={"Submit"}
+                    />
+                  </div>
+                </>
               ) : null}
             </CardContent>
           </Card>

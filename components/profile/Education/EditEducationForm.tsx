@@ -42,23 +42,23 @@ const EditEducationForm = ({ educationId }: { educationId: string }) => {
 
   // update default date range
   useEffect(() => {
-    if (data?.startDate && data?.endDate) {
+    if (data?.data?.startDate && data?.data?.endDate) {
       setDateRange({
-        from: new Date(data.startDate),
-        to: new Date(data.endDate),
+        from: new Date(data.data?.startDate),
+        to: new Date(data.data?.endDate),
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data?.startDate, data?.endDate]);
+  }, [data?.data?.startDate, data?.data?.endDate]);
 
   // handle update education item
   const { mutate, isPending } = useMutation({
     mutationFn: (values: EducationFormType) =>
       updateEducationItemAction(educationId, values, dateRange),
     onSuccess: (data) => {
-      if (!data) {
+      if (data?.error) {
         toast({
-          description: "Something went wrong",
+          description: data?.error,
         });
         return;
       }
@@ -74,8 +74,8 @@ const EditEducationForm = ({ educationId }: { educationId: string }) => {
   const form = useForm<EducationFormType>({
     resolver: zodResolver(educationFormSchema),
     defaultValues: {
-      school: data?.school || "",
-      course: data?.course || "",
+      school: data?.data?.school || "",
+      course: data?.data?.course || "",
     },
   });
 

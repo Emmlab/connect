@@ -16,7 +16,10 @@ const createPostCommentAction = async ({
 }: {
   comment: string;
   postId: string;
-}): Promise<PostCommentType | null> => {
+}): Promise<{
+  data?: PostCommentType;
+  error?: string;
+}> => {
   const developer = await authenticateAndRedirect();
   const sessionCookie = auth.getSession();
   try {
@@ -41,12 +44,14 @@ const createPostCommentAction = async ({
       comment: responsePostCommentDocument.comment,
       developerId: responsePostCommentDocument.developerId,
       developerName: developer.name || "",
+      developerEmail: developer.email || "",
+      mine: developer?.$id === responsePostCommentDocument.developerId,
     };
 
-    return postComment;
+    return { data: postComment };
   } catch (error) {
     console.error(error);
-    return null;
+    return { error: "Something went wrong." };
   }
 };
 
@@ -55,7 +60,10 @@ const deletePostCommentAction = async ({
   id,
 }: {
   id: string;
-}): Promise<string | null> => {
+}): Promise<{
+  data?: string;
+  error?: string;
+}> => {
   await authenticateAndRedirect();
   const sessionCookie = auth.getSession();
   try {
@@ -65,10 +73,10 @@ const deletePostCommentAction = async ({
       "PostComments",
       id,
     );
-    return id;
+    return { data: id };
   } catch (error) {
     console.error(error);
-    return null;
+    return { error: "Something went wrong." };
   }
 };
 
@@ -85,7 +93,10 @@ const postLikeAction = async ({
   isDisLiked: boolean;
   likesCount: number;
   disLikesCount: number;
-}): Promise<string | null> => {
+}): Promise<{
+  data?: string;
+  error?: string;
+}> => {
   const developer = await authenticateAndRedirect();
   const sessionCookie = auth.getSession();
   try {
@@ -163,10 +174,10 @@ const postLikeAction = async ({
       postId,
       { likesCount: newLikesCount, disLikesCount: newDisLikesCount },
     );
-    return postId;
+    return { data: postId };
   } catch (error) {
     console.error(error);
-    return null;
+    return { error: "Something went wrong." };
   }
 };
 
@@ -183,7 +194,10 @@ const postDisLikeAction = async ({
   isDisLiked: boolean;
   likesCount: number;
   disLikesCount: number;
-}): Promise<string | null> => {
+}): Promise<{
+  data?: string;
+  error?: string;
+}> => {
   const developer = await authenticateAndRedirect();
   const sessionCookie = auth.getSession();
   try {
@@ -260,10 +274,10 @@ const postDisLikeAction = async ({
       postId,
       { likesCount: newLikesCount, disLikesCount: newDisLikesCount },
     );
-    return postId;
+    return { data: postId };
   } catch (error) {
     console.error(error);
-    return null;
+    return { error: "Something went wrong." };
   }
 };
 

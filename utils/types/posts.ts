@@ -11,8 +11,10 @@ export type PostType = {
   disLikesCount: number;
   developerId: string;
   developerName: string;
+  developerEmail: string;
   liked: boolean;
   disLiked: boolean;
+  mine: boolean;
   comments?: PostCommentType[];
 };
 

@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { User, BriefcaseBusiness, GraduationCap, Github } from "lucide-react";
@@ -10,6 +9,7 @@ import { usePathname } from "next/navigation";
 const ProfileNavigation = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const router = useRouter();
   // get developerId from url
   const developerId = searchParams.get("developerId") || "";
   const name = searchParams.get("name") || "";
@@ -55,14 +55,21 @@ const ProfileNavigation = () => {
                 : "link"
             }
             key={`${link.routePrivate}`}
+            onClick={() =>
+              router.push(developerId ? link.routePublic : link.routePrivate)
+            }
           >
-            <Link
+            <div className="flex items-center gap-2">
+              {link.icon}
+              <span>{link.name}</span>
+            </div>
+            {/* <Link
               href={developerId ? link.routePublic : link.routePrivate}
               className="flex items-center gap-2"
             >
               {link.icon}
               <span>{link.name}</span>
-            </Link>
+            </Link> */}
           </Button>
         ))}
       </div>

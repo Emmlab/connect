@@ -23,9 +23,9 @@ const EducationCard = ({ educationItem }: { educationItem: EducationType }) => {
     useMutation({
       mutationFn: (id: string) => deleteEducationItemAction(id),
       onSuccess: (data) => {
-        if (!data) {
+        if (data?.error) {
           toast({
-            description: "Something went wrong",
+            description: data?.error,
           });
           return;
         }
