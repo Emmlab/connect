@@ -21,9 +21,13 @@ const Developers = () => {
   });
 
   return (
-    <div className="space-y-4 w-full">
+    <div className="mt-5 space-y-4 w-full">
       {/* hide back button on other pages eg. landing page */}
-      {pathname === "/developers" ? <BackButton /> : null}
+      {pathname === "/developers" ? (
+        <div className="flex justify-end">
+          <BackButton />
+        </div>
+      ) : null}
       <div className="bg-muted rounded-md px-4 pb-5 h-full">
         <div className="flex items-center w-full py-3">
           <h2 className="font-bold pt-4 pb-2">Developers</h2>

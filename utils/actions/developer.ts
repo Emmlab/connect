@@ -43,7 +43,9 @@ const developerSignupAction = async (
 
     if (suspectedGithubUser?.total_count === 0) {
       // user is not a valid github user
-      return { error: "Signup failed. Please use a valid github Email." };
+      return {
+        error: "Signup failed. Please use a valid PUBLIC GITHUB EMAIL.",
+      };
     }
     await auth.developerSignup(values);
     const loginResponse = await auth.developerLogin({
@@ -70,7 +72,7 @@ const developerLoginAction = async (
     return { data: response };
   } catch (error) {
     console.error(error);
-    return { error: "Something went wrong." };
+    return { error: "Wrong credentails. Login failed." };
   }
 };
 
@@ -84,7 +86,7 @@ const developerLogoutAction = async (): Promise<{
     return { data: null };
   } catch (error) {
     console.error(error);
-    return { error: "Something went wrong." };
+    return { error: "Logout failed." };
   }
 };
 

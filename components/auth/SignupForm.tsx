@@ -50,7 +50,7 @@ const SignupForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-muted p-8 rounded w-[95%] md:w-[70%] lg:w-[45%] mx-auto"
+        className="bg-muted rounded-md p-8 w-[95%] md:w-[70%] lg:w-[45%] mx-auto"
       >
         <h2 className="capitalize font-semibold text-4xl mb-6">Signup</h2>
         <div className="flex flex-col gap-2">
@@ -59,6 +59,7 @@ const SignupForm = () => {
             inputType="email"
             name="email"
             control={form.control}
+            description="Your public GITHUB email"
           />
           <CustomFormField
             inputType="password"

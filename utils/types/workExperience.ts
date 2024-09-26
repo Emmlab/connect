@@ -20,9 +20,14 @@ export const workExperienceFormSchema = z.object({
   role: z.string().min(2, {
     message: "Field must be at least 1 characters.",
   }),
-  description: z.string().min(5, {
-    message: "Field must be at least 5 characters.",
-  }),
+  description: z
+    .string()
+    .min(5, {
+      message: "Field must be at least 5 characters.",
+    })
+    .max(1000, {
+      message: "Field must be at a maximum of 1000 characters.",
+    }),
 });
 
 export type WorkExperienceFormType = z.infer<typeof workExperienceFormSchema>;
