@@ -78,7 +78,7 @@ const GithubRepositoriesCard = ({
                   {Object.keys(languagesIcons).includes(language) ? (
                     <Image
                       src={languagesIcons[language]}
-                      alt="Failure Illustration"
+                      alt="language icon"
                       className="h-[15px] w-[25px] rounded-md object-contain"
                     />
                   ) : (
