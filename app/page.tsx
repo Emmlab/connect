@@ -8,6 +8,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import { Handshake, LogIn } from "lucide-react";
 
 /**
  * The Home component renders a page layout with a title, quote, and buttons for GitHub authentication
@@ -37,18 +38,20 @@ const Home = () => {
             </p>
             <div className="flex gap-4 mt-4">
               <Button asChild variant="outline" className="w-fit">
-                <Link href="/login" className="flex items-center w-full">
-                  Login
+                <Link href="/login" className="flex items-center space-x-2">
+                  <LogIn className="h-[15px]" />
+                  Signin
                 </Link>
               </Button>
               <Button asChild variant="secondary" className="w-fit">
-                <Link href="/signup" className="flex items-center w-full">
-                  Get Started
+                <Link href="/signup" className="flex items-center">
+                  <Handshake className="h-[15px]" />
+                  Signup
                 </Link>
               </Button>
             </div>
           </div>
-          <div className="h-[60vh] w-full md:w-[40%] flex">
+          <div className="h-[60vh] w-full md:w-[35%] flex justify-end">
             <Developers />
           </div>
         </section>

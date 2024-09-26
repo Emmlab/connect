@@ -2,6 +2,17 @@ import * as z from "zod";
 import { PASSWORD_REGEX } from "../magicValues";
 
 // AUTH/DEVELOPER/PROFILE
+const passwordSchema = z
+  .string()
+  .min(8, "Password must be at least 8 characters long")
+  .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+  .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+  .regex(/[0-9]/, "Password must contain at least one number")
+  .regex(
+    /[!@#$%^&*()]/,
+    "Password must contain at least one special character",
+  );
+
 export type SignupFormType = {
   name: string;
   email: string;
@@ -16,18 +27,8 @@ export const signupFormSchema = z
       .string()
       .min(1, { message: "This field has to be filled." })
       .email("This is not a valid email."),
-    password: z
-      .string()
-      .min(1, { message: "Must have at least 1 character" })
-      .regex(PASSWORD_REGEX, {
-        message: "Your password is not valid",
-      }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: "Must have at least 1 character" })
-      .regex(PASSWORD_REGEX, {
-        message: "Your password is not valid",
-      }),
+    password: passwordSchema,
+    confirmPassword: passwordSchema,
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -43,12 +44,7 @@ export const loginFormSchema = z.object({
     .string()
     .min(1, { message: "This field has to be filled." })
     .email("This is not a valid email."),
-  password: z
-    .string()
-    .min(1, { message: "Must have at least 1 character" })
-    .regex(PASSWORD_REGEX, {
-      message: "Your password is not valid",
-    }),
+  password: passwordSchema,
 });
 
 // developer/profile
@@ -65,18 +61,8 @@ export const developerFormSchema = z
     name: z.string().min(2, {
       message: "Field must be at least 2 characters.",
     }),
-    password: z
-      .string()
-      .regex(PASSWORD_REGEX, {
-        message: "Your password is not valid",
-      })
-      .optional(),
-    confirmPassword: z
-      .string()
-      .regex(PASSWORD_REGEX, {
-        message: "Your password is not valid",
-      })
-      .optional(),
+    password: passwordSchema.optional(),
+    confirmPassword: passwordSchema.optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",

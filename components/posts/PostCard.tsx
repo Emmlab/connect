@@ -116,7 +116,7 @@ const PostCard = ({ post }: { post: PostType }) => {
             className="flex items-center gap-2 cursor-pointer"
             onMouseDown={() => handleProfileRedirect()}
           >
-            <div className="rounded-full w-[40px] h-[40px] shadow-lg">
+            <div className="rounded-full w-[40px] h-[40px] flex items-center justify-center shadow-lg">
               {post.developerName === "404" ? (
                 <Image
                   src={reaper}
@@ -124,14 +124,18 @@ const PostCard = ({ post }: { post: PostType }) => {
                   className="w-[38px] h-[38px] rounded-md object-contain"
                 />
               ) : (
-                <Avvvatars
-                  style="shape"
-                  value={post?.developerName || "Unknown"}
-                  size={42}
-                  shadow
-                  border
-                  borderColor="whitesmoke"
-                />
+                <div
+                  className={`${isPendingDeletePost || isPendingLikePost || isPendingDisLikePost ? "animate-spin" : ""}`}
+                >
+                  <Avvvatars
+                    style="shape"
+                    value={post?.developerName || "Unknown"}
+                    size={42}
+                    shadow
+                    border
+                    borderColor="whitesmoke"
+                  />
+                </div>
               )}
             </div>
             <div className="flex flex-col">
