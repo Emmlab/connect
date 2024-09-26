@@ -7,10 +7,9 @@ import NothingtoShow from "../../layout/NothingtoShow";
 
 import { useSearchParams } from "next/navigation";
 import { getWorkExperienceAction } from "@/utils/actions/workExperience";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const WorkExperienceList = () => {
-  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const pageNumber = Number(searchParams.get("page")) || 1;
   // get developerId from url

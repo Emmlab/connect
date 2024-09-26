@@ -8,10 +8,9 @@ import NothingtoShow from "../../layout/NothingtoShow";
 
 import { useSearchParams } from "next/navigation";
 import { getEducationAction } from "@/utils/actions/education";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const EducationList = () => {
-  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const pageNumber = Number(searchParams.get("page")) || 1;
   // get developerId from url

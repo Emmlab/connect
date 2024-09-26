@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useSearchParams } from "next/navigation";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import PostCard from "./PostCard";
 import { CornerLeftUp } from "lucide-react";
@@ -10,7 +10,6 @@ import PaginationContainer from "@/components/layout/PaginationContainer";
 import { getDeveloper, getPostsAction } from "@/utils/actions/";
 
 const Posts = () => {
-  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const pageNumber = Number(searchParams.get("page")) || 1;
 

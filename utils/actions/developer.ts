@@ -41,7 +41,6 @@ const developerSignupAction = async (
     const suspectedGithubUser: GithubDeveloperType | null =
       await auth.getGithubDeveloperProfile(values.email);
 
-    console.log({ suspectedGithubUser });
     if (suspectedGithubUser?.total_count === 0) {
       // user is not a valid github user
       return { error: "Signup failed. Please use a valid github Email." };
@@ -111,10 +110,6 @@ const getDevelopersAction = async (
         );
       }
     }
-
-    console.log({ noLoggedInUser });
-    console.log({ userDocuments });
-    console.log({ usersData });
 
     return { data: usersData };
   } catch (error) {

@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { User, BriefcaseBusiness, GraduationCap, Github } from "lucide-react";
