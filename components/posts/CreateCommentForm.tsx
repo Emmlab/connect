@@ -32,9 +32,9 @@ const CreateCommentForm = ({ postId }: { postId: string }) => {
     mutationFn: (values: PostCommentFormType) =>
       createPostCommentAction({ comment: values.comment, postId }),
     onSuccess: (data) => {
-      if (!data) {
+      if (data?.error) {
         toast({
-          description: "Something went wrong",
+          description: data?.error,
         });
         return;
       }

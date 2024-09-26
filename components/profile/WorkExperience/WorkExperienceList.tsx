@@ -7,9 +7,10 @@ import NothingtoShow from "../../layout/NothingtoShow";
 
 import { useSearchParams } from "next/navigation";
 import { getWorkExperienceAction } from "@/utils/actions/workExperience";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const WorkExperienceList = () => {
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const pageNumber = Number(searchParams.get("page")) || 1;
   // get developerId from url
@@ -17,13 +18,13 @@ const WorkExperienceList = () => {
 
   // get paginated work experience data
   const { data, isPending } = useQuery({
-    queryKey: ["workExperience", pageNumber],
+    queryKey: ["workExperience", pageNumber, developerId],
     queryFn: () => getWorkExperienceAction({ page: pageNumber, developerId }),
   });
 
-  const workExperience = data?.workExperience || [];
-  const page = data?.page || 0;
-  const totalPages = data?.totalPages || 0;
+  const workExperience = data?.data?.workExperience || [];
+  const page = data?.data?.page || 0;
+  const totalPages = data?.data?.totalPages || 0;
 
   // display loaders when getting work experience list
   if (isPending)

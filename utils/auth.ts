@@ -1,5 +1,5 @@
 import { cookies, headers } from "next/headers";
-import { OAuthProvider } from "node-appwrite";
+import { OAuthProvider, ID } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "./appwrite";
 import {
   DeveloperType,
@@ -44,12 +44,61 @@ class Auth {
     return this.user;
   }
 
+  async developerSignup({
+    email,
+    name,
+    password,
+  }: {
+    email: string;
+    name: string;
+    password: string;
+  }) {
+    "use server";
+    const { account } = await createAdminClient();
+
+    const user = await account.create(ID.unique(), email, password, name);
+    return user;
+  }
+
+  async developerLogin({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) {
+    const { account } = await createAdminClient();
+    const userWithSecret = await account.createEmailPasswordSession(
+      email,
+      password,
+    );
+
+    cookies().set("session", userWithSecret.secret, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+      expires: new Date(userWithSecret.expire),
+      path: "/",
+    });
+    return userWithSecret;
+  }
+
   async updateDeveloperName(developerId: string, name: string) {
     "use server";
     const { users } = await createAdminClient();
     await users.updateName(
       developerId, // userId
       name, // name
+    );
+    return null;
+  }
+
+  async updateDeveloperPassword(developerId: string, password: string) {
+    "use server";
+    const { users } = await createAdminClient();
+    await users.updatePassword(
+      developerId, // userId
+      password, // name
     );
     return null;
   }
@@ -63,6 +112,7 @@ class Auth {
         `https://api.github.com/search/users?q=${email}`,
       );
       const data = await response.json();
+
       return data;
     } catch (error) {
       console.error(error);
@@ -92,17 +142,18 @@ class Auth {
     const headersList = headers();
     const fullUrl = headersList.get("referer") || "";
     const failureUrl = `${fullUrl}failure`;
-    console.log({fullUrl});
-    console.log({failureUrl});
     const { account } = await createAdminClient();
-    const redirectUrl = await account.createOAuth2Token(
-      OAuthProvider.Github,
-      fullUrl, // Callback URL for success
-      failureUrl, // Callback URL for failure
-      ["public_repo", "user"],
-    );
-
-    console.log({redirectUrl});
+    let redirectUrl = null;
+    try {
+      redirectUrl = await account.createOAuth2Token(
+        OAuthProvider.Github,
+        fullUrl, // Callback URL for success
+        failureUrl, // Callback URL for failure
+        ["public_repo", "user"],
+      );
+    } catch (error) {
+      console.log({ error });
+    }
     return redirectUrl;
   }
 

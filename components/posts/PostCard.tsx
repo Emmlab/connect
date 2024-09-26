@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import Image from "next/image";
 import CustomButton from "@/components/layout/FormComponents/CustomButton";
 import { ThumbsUp, ThumbsDown, MessageCircle, Trash2 } from "lucide-react";
 import CreateCommentForm from "./CreateCommentForm";
@@ -22,9 +23,12 @@ import {
 import { PostCommentType } from "@/utils/types/postLikesComments";
 import { PostType } from "@/utils/types/posts";
 import { format } from "date-fns";
+import reaper from "@/assets/reaper.png";
+import { useRouter } from "next/navigation";
 
 const PostCard = ({ post }: { post: PostType }) => {
   const { toast } = useToast();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const [showComments, setShowComments] = React.useState(false);
 
@@ -39,9 +43,9 @@ const PostCard = ({ post }: { post: PostType }) => {
         disLikesCount: post.disLikesCount,
       }),
     onSuccess: (data) => {
-      if (!data) {
+      if (data?.error) {
         toast({
-          description: "Something went wrong",
+          description: data?.error,
         });
         return;
       }
@@ -62,9 +66,9 @@ const PostCard = ({ post }: { post: PostType }) => {
           disLikesCount: post.disLikesCount,
         }),
       onSuccess: (data) => {
-        if (!data) {
+        if (data?.error) {
           toast({
-            description: "Something went wrong",
+            description: data.error,
           });
           return;
         }
@@ -78,9 +82,9 @@ const PostCard = ({ post }: { post: PostType }) => {
     useMutation({
       mutationFn: (id: string) => deletePostAction(id),
       onSuccess: (data) => {
-        if (!data) {
+        if (data?.error) {
           toast({
-            description: "Something went wrong",
+            description: data?.error,
           });
           return;
         }
@@ -90,20 +94,45 @@ const PostCard = ({ post }: { post: PostType }) => {
       },
     });
 
+  const handleProfileRedirect = () => {
+    if (post.developerName === "404") {
+      toast({
+        description: "User does not exist",
+      });
+      return true;
+    }
+    router.push(
+      post.mine
+        ? "/profile/personal-details"
+        : `/profile/personal-details/?name=${post.developerName}&email=${post.developerEmail}&developerId=${post.developerId}`,
+    );
+  };
+
   return (
     <Card className="bg-muted drop-shadow-md">
       <CardHeader className="flex gap-2">
         <CardTitle className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onMouseDown={() => handleProfileRedirect()}
+          >
             <div className="rounded-full w-[40px] h-[40px] shadow-lg">
-              <Avvvatars
-                style="shape"
-                value={post?.developerName || "Github Username"}
-                size={42}
-                shadow
-                border
-                borderColor="whitesmoke"
-              />
+              {post.developerName === "404" ? (
+                <Image
+                  src={reaper}
+                  alt="Unkown user"
+                  className="w-[38px] h-[38px] rounded-md object-contain"
+                />
+              ) : (
+                <Avvvatars
+                  style="shape"
+                  value={post?.developerName || "Unknown"}
+                  size={42}
+                  shadow
+                  border
+                  borderColor="whitesmoke"
+                />
+              )}
             </div>
             <div className="flex flex-col">
               <div className="line-clamp-1 text-base">
@@ -119,14 +148,16 @@ const PostCard = ({ post }: { post: PostType }) => {
           </div>
           <div className="flex items-center gap-2 my-2">
             {/* delete post */}
-            <CustomButton
-              icon={<Trash2 className="h-[18px]" />}
-              text=""
-              handleClick={() => mutateDeletePost(post.$id)}
-              isPending={isPendingDeletePost}
-              isDelete
-              className="h-fit w-fit px-2 py-1"
-            />
+            {post.mine ? (
+              <CustomButton
+                icon={<Trash2 className="h-[18px]" />}
+                text=""
+                handleClick={() => mutateDeletePost(post.$id)}
+                isPending={isPendingDeletePost}
+                isDelete
+                className="h-fit w-fit px-2 py-1"
+              />
+            ) : null}
           </div>
         </CardTitle>
       </CardHeader>

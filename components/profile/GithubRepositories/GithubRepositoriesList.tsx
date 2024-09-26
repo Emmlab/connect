@@ -33,12 +33,15 @@ const GithubRepositoriesList = ({
     );
 
   // no repositories element
-  if (!githubDeveloperRepositories || githubDeveloperRepositories.length < 1)
+  if (
+    !githubDeveloperRepositories?.data ||
+    githubDeveloperRepositories?.data.length < 1
+  )
     return <NothingtoShow />;
 
   return (
     <div className="flex flex-col gap-2">
-      {githubDeveloperRepositories.map((repositoryItem) => (
+      {githubDeveloperRepositories?.data.map((repositoryItem) => (
         <GithubRepositoriesCard
           key={`${repositoryItem.id}-repository-item`}
           repositoryItem={repositoryItem}

@@ -21,11 +21,14 @@ const getWorkExperienceAction = async ({
   page?: number;
   developerId?: string;
 }): Promise<{
-  workExperience: WorkExperienceType[];
-  count: number;
-  page: number;
-  totalPages: number;
-} | null> => {
+  data?: {
+    workExperience: WorkExperienceType[];
+    count: number;
+    page: number;
+    totalPages: number;
+  };
+  error?: string;
+}> => {
   const developer = developerId
     ? { $id: developerId }
     : await authenticateAndRedirect();
@@ -59,17 +62,23 @@ const getWorkExperienceAction = async ({
     );
     // calculate total page count
     const totalPages = Math.ceil(total / DEFAULT_PAGE_LIMIT);
-    return { workExperience, count: total, page, totalPages };
+    return { data: { workExperience, count: total, page, totalPages } };
   } catch (error) {
     console.error(error);
-    return { workExperience: [], count: 0, page: page, totalPages: 0 };
+    return {
+      data: { workExperience: [], count: 0, page: page, totalPages: 0 },
+      error: "Something went wrong",
+    };
   }
 };
 
 // get work experience Item
 const getWorkExperienceItemAction = async (
   id: string,
-): Promise<WorkExperienceType | null> => {
+): Promise<{
+  data?: WorkExperienceType;
+  error?: string;
+}> => {
   await authenticateAndRedirect();
   const sessionCookie = auth.getSession();
   try {
@@ -96,10 +105,10 @@ const getWorkExperienceItemAction = async (
     if (!workExperienceItem) {
       redirect("/profile/work-experience");
     }
-    return workExperienceItem;
+    return { data: workExperienceItem };
   } catch (error) {
     console.error(error);
-    return null;
+    return { error: "Something went wrong." };
   }
 };
 
@@ -107,7 +116,10 @@ const getWorkExperienceItemAction = async (
 const createWorkExperienceAction = async (
   values: WorkExperienceFormType,
   dateRange: DateRange,
-): Promise<WorkExperienceType | null> => {
+): Promise<{
+  data?: WorkExperienceType;
+  error?: string;
+}> => {
   const sessionCookie = auth.getSession();
   const developer = await authenticateAndRedirect();
   try {
@@ -139,10 +151,10 @@ const createWorkExperienceAction = async (
       developerId: document.developerId,
     };
 
-    return workExperienceItem;
+    return { data: workExperienceItem };
   } catch (error) {
     console.error(error);
-    return null;
+    return { error: "Something went wrong." };
   }
 };
 
@@ -151,7 +163,10 @@ const updateWorkExperienceItemAction = async (
   id: string,
   values: WorkExperienceFormType,
   dateRange: DateRange,
-): Promise<WorkExperienceType | null> => {
+): Promise<{
+  data?: WorkExperienceType;
+  error?: string;
+}> => {
   const sessionCookie = auth.getSession();
   try {
     const { databases } = await createSessionClient(sessionCookie.value);
@@ -174,17 +189,20 @@ const updateWorkExperienceItemAction = async (
       developerId: document.developerId,
     };
 
-    return workExperienceItem;
+    return { data: workExperienceItem };
   } catch (error) {
     console.error(error);
-    return null;
+    return { error: "Something went wrong." };
   }
 };
 
 // delete work experience
 const deleteWorkExperienceItemAction = async (
   id: string,
-): Promise<string | null> => {
+): Promise<{
+  data?: string;
+  error?: string;
+}> => {
   await authenticateAndRedirect();
   const sessionCookie = auth.getSession();
   try {
@@ -194,10 +212,10 @@ const deleteWorkExperienceItemAction = async (
       "WorkExperience",
       id,
     );
-    return id;
+    return { data: id };
   } catch (error) {
     console.error(error);
-    return null;
+    return { error: "Something went wrong." };
   }
 };
 

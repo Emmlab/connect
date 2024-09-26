@@ -8,7 +8,9 @@ export type PostCommentType = {
   comment: string;
   developerId: string;
   developerName: string;
+  developerEmail: string;
   post?: string;
+  mine: boolean;
 };
 
 export const postCommentFormSchema = z.object({

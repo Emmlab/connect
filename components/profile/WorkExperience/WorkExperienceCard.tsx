@@ -29,9 +29,9 @@ const WorkExperienceCard = ({
   } = useMutation({
     mutationFn: (id: string) => deleteWorkExperienceItemAction(id),
     onSuccess: (data) => {
-      if (!data) {
+      if (data?.error) {
         toast({
-          description: "Something went wrong",
+          description: data.error,
         });
         return;
       }

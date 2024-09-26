@@ -17,7 +17,7 @@ const Developers = () => {
   // get all developers
   const { data, isPending } = useQuery({
     queryKey: ["developers", pathname],
-    queryFn: () => getDevelopersAction(),
+    queryFn: () => getDevelopersAction(true),
   });
 
   return (
@@ -37,8 +37,8 @@ const Developers = () => {
             </>
           ) : (
             <>
-              {data?.users ? (
-                data.users.map((developer: DeveloperType) => (
+              {data && data?.data && data?.data?.length > 0 ? (
+                data.data.map((developer: DeveloperType) => (
                   <React.Fragment key={`${developer.$id}-developer`}>
                     <DeveloperCard developer={developer} />
                   </React.Fragment>

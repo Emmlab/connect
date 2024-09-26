@@ -2,6 +2,7 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { LoaderCircle } from "lucide-react";
 
 type PaginationContainerProps = {
   currentPage: number;
@@ -14,6 +15,7 @@ const PaginationContainer = ({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [clickedPage, setClickedPage] = React.useState<number | null>();
 
   /* create array of page numbers based on the `totalPages` value. It uses
   the `Array.from()` method to create a new array with a length equal to `totalPages`. The second
@@ -22,6 +24,7 @@ const PaginationContainer = ({
   const pageButtons = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   const handlePageChange = (page: number) => {
+    setClickedPage(page);
     // set default params; consider params on profile pages
     const defaultParams = {
       page: String(page),
@@ -38,14 +41,19 @@ const PaginationContainer = ({
   return (
     <div className="flex  gap-x-2">
       {pageButtons.map((page) => {
+        const isLoading = clickedPage && currentPage !== clickedPage;
         return (
           <Button
             key={page}
-            className="h-fit w-fit px-2 py-1 gap-1"
+            className={`${isLoading ? "cursor-not-allowed" : null} h-fit w-fit px-2 py-1 gap-1`}
             variant={currentPage === page ? "default" : "outline"}
             onClick={() => handlePageChange(page)}
+            disabled={isLoading as boolean}
           >
             {page}
+            {clickedPage === page && isLoading ? (
+              <LoaderCircle className="animate-spin h-3" />
+            ) : null}
           </Button>
         );
       })}

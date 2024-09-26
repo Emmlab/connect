@@ -28,9 +28,9 @@ const CreatePostForm = () => {
   const { mutate, isPending } = useMutation({
     mutationFn: (values: PostFormType) => createPostAction(values),
     onSuccess: (data) => {
-      if (!data) {
+      if (data?.error) {
         toast({
-          description: "Something went wrong",
+          description: data?.error,
         });
         return;
       }

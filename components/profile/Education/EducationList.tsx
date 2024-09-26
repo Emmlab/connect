@@ -8,22 +8,23 @@ import NothingtoShow from "../../layout/NothingtoShow";
 
 import { useSearchParams } from "next/navigation";
 import { getEducationAction } from "@/utils/actions/education";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const EducationList = () => {
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const pageNumber = Number(searchParams.get("page")) || 1;
   // get developerId from url
   const developerId = searchParams.get("developerId") || undefined;
 
   const { data, isPending } = useQuery({
-    queryKey: ["education", pageNumber],
+    queryKey: ["education", pageNumber, developerId],
     queryFn: () => getEducationAction({ page: pageNumber, developerId }),
   });
 
-  const education = data?.education || [];
-  const page = data?.page || 0;
-  const totalPages = data?.totalPages || 0;
+  const education = data?.data?.education || [];
+  const page = data?.data?.page || 0;
+  const totalPages = data?.data?.totalPages || 0;
 
   // display loaders when getting edutcation items
   if (isPending)
