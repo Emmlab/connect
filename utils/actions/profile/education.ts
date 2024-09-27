@@ -1,20 +1,20 @@
 "use server";
 import { redirect } from "next/navigation";
 import {
-  WorkExperienceType,
-  WorkExperienceFormType,
-  workExperienceFormSchema,
-} from "../types/";
+  EducationType,
+  EducationFormType,
+  educationFormSchema,
+} from "../../types/";
 import { DateRange } from "react-day-picker";
 import { Query, ID } from "node-appwrite";
-import { createSessionClient, createAdminClient } from "../appwrite/";
-import auth from "../appwrite/auth";
-import { authenticateAndRedirect } from "./auth";
-import { DEFAULT_PAGE_LIMIT } from "../magicValues";
+import { createSessionClient, createAdminClient } from "../../appwrite";
+import auth from "../../appwrite/auth";
+import { authenticateAndRedirect } from "../auth";
+import { DEFAULT_PAGE_LIMIT } from "../../magicValues";
 
-// WORK EXPERIENCE
-// get work experience
-const getWorkExperienceAction = async ({
+// EDUCATION
+// get education
+const getEducationAction = async ({
   page = 1,
   developerId,
 }: {
@@ -22,17 +22,18 @@ const getWorkExperienceAction = async ({
   developerId?: string;
 }): Promise<{
   data?: {
-    workExperience: WorkExperienceType[];
+    education: EducationType[];
     count: number;
     page: number;
     totalPages: number;
   };
   error?: string;
-}> => {
+} | null> => {
   const developer = developerId
     ? { $id: developerId }
     : await authenticateAndRedirect();
   try {
+    // define database queries
     const queries = [
       Query.orderDesc("$createdAt"),
       Query.limit(DEFAULT_PAGE_LIMIT),
@@ -41,89 +42,83 @@ const getWorkExperienceAction = async ({
     ];
 
     const { databases } = await createAdminClient();
-    // get work experiences based on queries
+    // get education list based on queries
     const { documents, total } = await databases.listDocuments(
       process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "WorkExperience",
+      "Education",
       queries,
     );
-    const workExperience: WorkExperienceType[] = documents.map(
-      (workExperienceItem) => ({
-        $id: workExperienceItem.$id,
-        $createdAt: workExperienceItem.$createdAt,
-        $updatedAt: workExperienceItem.$updatedAt,
-        company: workExperienceItem.company,
-        role: workExperienceItem.role,
-        description: workExperienceItem.description,
-        startDate: workExperienceItem.startDate,
-        endDate: workExperienceItem.endDate,
-        developerId: workExperienceItem.developerId,
-      }),
-    );
+    const education: EducationType[] = documents.map((educationItem) => ({
+      $id: educationItem.$id,
+      $createdAt: educationItem.$createdAt,
+      $updatedAt: educationItem.$updatedAt,
+      school: educationItem.school,
+      course: educationItem.course,
+      startDate: educationItem.startDate,
+      endDate: educationItem.endDate,
+      developerId: educationItem.developerId,
+    }));
+
     // calculate total page count
     const totalPages = Math.ceil(total / DEFAULT_PAGE_LIMIT);
-    return { data: { workExperience, count: total, page, totalPages } };
+    return { data: { education, count: total, page, totalPages } };
   } catch (error) {
     console.error(error);
     return {
-      data: { workExperience: [], count: 0, page: page, totalPages: 0 },
+      data: { education: [], count: 0, page: page, totalPages: 0 },
       error: "Something went wrong",
     };
   }
 };
 
-// get work experience Item
-const getWorkExperienceItemAction = async (
+// get education
+const getEducationItemAction = async (
   id: string,
-): Promise<{
-  data?: WorkExperienceType;
-  error?: string;
-}> => {
+): Promise<{ data?: EducationType; error?: string }> => {
   await authenticateAndRedirect();
   const sessionCookie = auth.getSession();
   try {
     const { databases } = await createSessionClient(sessionCookie.value);
-    // get work experience
+    // get education item based on id
     const document = await databases.getDocument(
       process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "WorkExperience",
+      "Education",
       id,
     );
-    const workExperienceItem: WorkExperienceType = {
+    const educationItem: EducationType = {
       $id: document.id,
       $createdAt: document.createdAt,
       $updatedAt: document.updatedAt,
-      company: document.company,
-      role: document.role,
-      description: document.description,
+      school: document.school,
+      course: document.course,
       startDate: document.startDate,
       endDate: document.endDate,
       developerId: document.developerId,
     };
-    // API is called on workexperience edit page
-    // redirect back to workexperience list if no item found
-    if (!workExperienceItem) {
-      redirect("/profile/work-experience");
+    // API is called on education edit page
+    // redirect back to education list if no item found
+    if (!educationItem) {
+      redirect("/profile/education");
     }
-    return { data: workExperienceItem };
+    return { data: educationItem };
   } catch (error) {
     console.error(error);
     return { error: "Something went wrong." };
   }
 };
 
-// create work experience
-const createWorkExperienceAction = async (
-  values: WorkExperienceFormType,
+// create education
+const createEducationAction = async (
+  values: EducationFormType,
   dateRange: DateRange,
 ): Promise<{
-  data?: WorkExperienceType;
+  data?: EducationType;
   error?: string;
 }> => {
   const sessionCookie = auth.getSession();
   const developer = await authenticateAndRedirect();
   try {
-    workExperienceFormSchema.parse(values);
+    educationFormSchema.parse(values);
     const { databases } = await createSessionClient(sessionCookie.value);
     // add date range and developerId to payload
     const data = {
@@ -132,72 +127,68 @@ const createWorkExperienceAction = async (
       endDate: dateRange.to,
       developerId: developer.$id,
     };
-    // create work experience
+    // create education ite,
     const document = await databases.createDocument(
       process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "WorkExperience",
+      "Education",
       ID.unique(),
       data,
     );
-    const workExperienceItem: WorkExperienceType = {
+    const educationItem: EducationType = {
       $id: document.id,
       $createdAt: document.createdAt,
       $updatedAt: document.updatedAt,
-      company: document.company,
-      role: document.role,
-      description: document.description,
+      school: document.school,
+      course: document.course,
       startDate: document.startDate,
       endDate: document.endDate,
       developerId: document.developerId,
     };
-
-    return { data: workExperienceItem };
+    return { data: educationItem };
   } catch (error) {
     console.error(error);
     return { error: "Something went wrong." };
   }
 };
 
-// edit work experience
-const updateWorkExperienceItemAction = async (
+// edit education
+const updateEducationItemAction = async (
   id: string,
-  values: WorkExperienceFormType,
+  values: EducationFormType,
   dateRange: DateRange,
 ): Promise<{
-  data?: WorkExperienceType;
+  data?: EducationType;
   error?: string;
 }> => {
   const sessionCookie = auth.getSession();
   try {
     const { databases } = await createSessionClient(sessionCookie.value);
-    // update work experience
+    // update education item
     const document = await databases.updateDocument(
       process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "WorkExperience",
+      "Education",
       id,
       { ...values, startDate: dateRange.from, endDate: dateRange.to },
     );
-    const workExperienceItem: WorkExperienceType = {
+    const educationItem: EducationType = {
       $id: document.id,
       $createdAt: document.createdAt,
       $updatedAt: document.updatedAt,
-      company: document.company,
-      role: document.role,
-      description: document.description,
+      school: document.school,
+      course: document.course,
       startDate: document.startDate,
       endDate: document.endDate,
       developerId: document.developerId,
     };
-
-    return { data: workExperienceItem };
+    return { data: educationItem };
   } catch (error) {
     console.error(error);
     return { error: "Something went wrong." };
   }
 };
 
-// delete work experience
-const deleteWorkExperienceItemAction = async (
+// delete education
+const deleteEducationItemAction = async (
   id: string,
 ): Promise<{
   data?: string;
@@ -209,7 +200,7 @@ const deleteWorkExperienceItemAction = async (
     const { databases } = await createSessionClient(sessionCookie.value);
     await databases.deleteDocument(
       process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "WorkExperience",
+      "Education",
       id,
     );
     return { data: id };
@@ -220,10 +211,10 @@ const deleteWorkExperienceItemAction = async (
 };
 
 export {
-  //WORK EXPERIENCE
-  getWorkExperienceAction,
-  getWorkExperienceItemAction,
-  createWorkExperienceAction,
-  updateWorkExperienceItemAction,
-  deleteWorkExperienceItemAction,
+  //EDUCATION
+  getEducationAction,
+  getEducationItemAction,
+  createEducationAction,
+  updateEducationItemAction,
+  deleteEducationItemAction,
 };
