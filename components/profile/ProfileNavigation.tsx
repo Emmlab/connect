@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { User, BriefcaseBusiness, GraduationCap, Github } from "lucide-react";
-import { usePathname } from "next/navigation";
 
 const ProfileNavigation = () => {
   const searchParams = useSearchParams();

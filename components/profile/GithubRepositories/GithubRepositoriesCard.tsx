@@ -1,9 +1,8 @@
 import React from "react";
 import Image, { StaticImageData } from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Github } from "lucide-react";
 
-import { GithubDeveloperRepositoriesType } from "@/utils/types/developer";
+import { GithubDeveloperRepositoriesType } from "@/utils/types/";
 import { format } from "date-fns";
 import typescript from "@/assets/programingLanguages/typescript.png";
 import swift from "@/assets/programingLanguages/swift.png";
@@ -20,6 +19,7 @@ import csharp from "@/assets/programingLanguages/c-sharp.png";
 import cplusplus from "@/assets/programingLanguages/c-plusplus.png";
 import c from "@/assets/programingLanguages/c.png";
 import css from "@/assets/programingLanguages/css.png";
+import { Github } from "lucide-react";
 
 /**
  * The `GithubRepositoriesCard` component renders a clickable card displaying information about a

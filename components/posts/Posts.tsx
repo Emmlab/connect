@@ -7,7 +7,7 @@ import PostCard from "./PostCard";
 import { CornerLeftUp } from "lucide-react";
 import PostCardSkeleton from "./PostCardSkeleton";
 import PaginationContainer from "@/components/layout/PaginationContainer";
-import { getDeveloper, getPostsAction } from "@/utils/actions/";
+import { getAuthenticatedDeveloper, getPostsAction } from "@/utils/actions/";
 
 const Posts = () => {
   const searchParams = useSearchParams();
@@ -22,7 +22,7 @@ const Posts = () => {
   // get developer
   const { data: developerData } = useQuery({
     queryKey: ["developer", 1],
-    queryFn: () => getDeveloper(),
+    queryFn: () => getAuthenticatedDeveloper(),
   });
 
   const posts = data?.data?.posts || [];

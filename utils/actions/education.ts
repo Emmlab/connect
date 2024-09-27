@@ -4,12 +4,12 @@ import {
   EducationType,
   EducationFormType,
   educationFormSchema,
-} from "../types/education";
+} from "../types/";
 import { DateRange } from "react-day-picker";
 import { Query, ID } from "node-appwrite";
-import { createSessionClient, createAdminClient } from "../appwrite";
-import auth from "../auth";
-import { authenticateAndRedirect } from "./developer";
+import { createSessionClient, createAdminClient } from "../appwrite/";
+import auth from "../appwrite/auth";
+import { authenticateAndRedirect } from "./auth";
 import { DEFAULT_PAGE_LIMIT } from "../magicValues";
 
 // EDUCATION

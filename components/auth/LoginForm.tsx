@@ -1,15 +1,15 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
 
 import { Form } from "@/components/ui/form";
 import CustomFormField from "@/components/layout/FormComponents/CustomFormField";
 import CustomButton from "@/components/layout/FormComponents/CustomButton";
+import GithubAuthButton from "./GithubAuthButton";
 
 import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { loginFormSchema, LoginFormType } from "@/utils/types/developer";
+import { loginFormSchema, LoginFormType } from "@/utils/types/";
 import { developerLoginAction } from "@/utils/actions/";
 import { useToast } from "@/hooks/use-toast";
 
@@ -67,6 +67,9 @@ const LoginForm = () => {
             text={"Login"}
             size="lg"
           />
+          <Suspense>
+            <GithubAuthButton />
+          </Suspense>
           <div className="my-4">
             Don&apos;t have an account?{" "}
             <Link href="/signup" className="font-semibold">

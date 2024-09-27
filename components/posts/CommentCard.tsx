@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";
@@ -6,12 +7,11 @@ import Avvvatars from "avvvatars-react";
 import CustomButton from "@/components/layout/FormComponents/CustomButton";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { PostCommentType } from "@/utils/types/postLikesComments";
+import { PostCommentType } from "@/utils/types/";
 import { deletePostCommentAction } from "@/utils/actions/";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import reaper from "@/assets/reaper.png";
-import { useRouter } from "next/navigation";
 
 const CommentCard = ({ comment }: { comment: PostCommentType }) => {
   const { toast } = useToast();

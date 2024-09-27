@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-// EDUCATION
+// EDUCATION TYPES
 export type EducationType = {
   $id: string;
   $createdAt: string;
@@ -12,6 +12,9 @@ export type EducationType = {
   developerId: string;
 };
 
+export type EducationFormType = z.infer<typeof educationFormSchema>;
+
+// EDUCATION SCHEMA
 export const educationFormSchema = z.object({
   school: z.string().min(2, {
     message: "Field must be at least 2 characters.",
@@ -20,5 +23,3 @@ export const educationFormSchema = z.object({
     message: "Field must be at least 2 characters.",
   }),
 });
-
-export type EducationFormType = z.infer<typeof educationFormSchema>;

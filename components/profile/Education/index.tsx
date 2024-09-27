@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
 import { useSearchParams } from "next/navigation";
-import EducationList from "./EducationList";
+
 import Link from "next/link";
+import EducationList from "./EducationList";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ProfileNavigation from "../ProfileNavigation";

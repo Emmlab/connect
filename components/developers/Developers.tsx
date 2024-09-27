@@ -9,7 +9,7 @@ import NothingtoShow from "../layout/NothingtoShow";
 import BackButton from "../layout/BackButton";
 
 import { getDevelopersAction } from "@/utils/actions/";
-import { DeveloperType } from "@/utils/types/developer";
+import { DeveloperType } from "@/utils/types/";
 
 const Developers = () => {
   const pathname = usePathname();

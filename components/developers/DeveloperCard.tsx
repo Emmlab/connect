@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import Avvvatars from "avvvatars-react";
-import { DeveloperType } from "@/utils/types/developer";
+import { DeveloperType } from "@/utils/types/";
 
 /**
  * The `DeveloperCard` component generates a clickable card displaying a developer's name and avatar,

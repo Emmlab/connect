@@ -6,8 +6,8 @@ import { GraduationCap, Pencil, Trash2 } from "lucide-react";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteEducationItemAction } from "@/utils/actions/";
+import { EducationType } from "@/utils/types/";
 import { useToast } from "@/hooks/use-toast";
-import { EducationType } from "@/utils/types/education";
 import { format } from "date-fns";
 
 const EducationCard = ({ educationItem }: { educationItem: EducationType }) => {

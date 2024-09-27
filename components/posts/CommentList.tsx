@@ -2,7 +2,7 @@
 import React from "react";
 import CommentCard from "./CommentCard";
 import NothingtoShow from "@/components/layout/NothingtoShow";
-import { PostCommentType } from "@/utils/types/postLikesComments";
+import { PostCommentType } from "@/utils/types/";
 
 const CommentList = ({ comments }: { comments: PostCommentType[] }) => {
   if (comments.length === 0) return <NothingtoShow />;

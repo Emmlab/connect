@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
-import CreatePostForm from "../../../components/posts/CreatePostForm";
-import Posts from "../../../components/posts/Posts";
+import CreatePostForm from "@/components/posts/CreatePostForm";
+import Posts from "@/components/posts/Posts";
 import {
   dehydrate,
   HydrationBoundary,

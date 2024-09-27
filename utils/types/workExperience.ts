@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-// WORK EXPERIENCE
+// WORK EXPERIENCE TYPES
 export type WorkExperienceType = {
   $id: string;
   $createdAt: string;
@@ -12,6 +12,9 @@ export type WorkExperienceType = {
   endDate: string;
   developerId: string;
 };
+
+// work experience zod infer type
+export type WorkExperienceFormType = z.infer<typeof workExperienceFormSchema>;
 
 export const workExperienceFormSchema = z.object({
   company: z.string().min(1, {
@@ -29,5 +32,3 @@ export const workExperienceFormSchema = z.object({
       message: "Field must be at a maximum of 1000 characters.",
     }),
 });
-
-export type WorkExperienceFormType = z.infer<typeof workExperienceFormSchema>;

@@ -1,11 +1,11 @@
 import { cookies, headers } from "next/headers";
 import { OAuthProvider, ID } from "node-appwrite";
-import { createAdminClient, createSessionClient } from "./appwrite";
+import { createAdminClient, createSessionClient } from ".";
 import {
   DeveloperType,
   GithubDeveloperType,
   GithubDeveloperRepositoriesType,
-} from "./types/developer";
+} from "../types/";
 
 type SessionCookie = {
   name: string;
@@ -121,7 +121,7 @@ class Auth {
   }
 
   // get github repositories using email
-  async getGithubDeveloperRepositories(
+  async getDeveloperGithubRepositories(
     name: string,
   ): Promise<GithubDeveloperRepositoriesType[] | null> {
     try {
@@ -152,7 +152,7 @@ class Auth {
         ["public_repo", "user"],
       );
     } catch (error) {
-      console.log({ error });
+      console.error({ error });
     }
     return redirectUrl;
   }

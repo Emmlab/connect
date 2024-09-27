@@ -1,8 +1,8 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import ProfileNavigation from "../ProfileNavigation";
 import { Form, FormLabel } from "@/components/ui/form";
+import ProfileNavigation from "../ProfileNavigation";
 import CustomButton from "@/components/layout/FormComponents/CustomButton";
 import CustomFormField from "@/components/layout/FormComponents/CustomFormField";
 
@@ -11,11 +11,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import { useSearchParams } from "next/navigation";
-import {
-  developerFormSchema,
-  DeveloperFormType,
-} from "@/utils/types/developer";
-import { updateDeveloper, getDeveloper } from "@/utils/actions/";
+import { developerFormSchema, DeveloperFormType } from "@/utils/types/";
+import { updateDeveloper, getAuthenticatedDeveloper } from "@/utils/actions/";
 
 const PersonalDetails = () => {
   const queryClient = useQueryClient();
@@ -25,7 +22,7 @@ const PersonalDetails = () => {
   // get developer
   const { data: developerData } = useQuery({
     queryKey: ["developer", 1],
-    queryFn: () => getDeveloper(),
+    queryFn: () => getAuthenticatedDeveloper(),
   });
 
   // handle update developer name

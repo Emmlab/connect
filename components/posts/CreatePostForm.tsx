@@ -8,7 +8,7 @@ import { CircleFadingPlus } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { postFormSchema, PostFormType } from "@/utils/types/posts";
+import { postFormSchema, PostFormType } from "@/utils/types/";
 import { createPostAction } from "@/utils/actions/";
 import { useToast } from "@/hooks/use-toast";
 

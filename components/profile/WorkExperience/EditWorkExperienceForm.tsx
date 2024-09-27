@@ -7,6 +7,7 @@ import { Form } from "@/components/ui/form";
 import CustomButton from "@/components/layout/FormComponents/CustomButton";
 import CustomFormField from "@/components/layout/FormComponents/CustomFormField";
 import CustomDateRangePicker from "@/components/layout/FormComponents/CustomDateRangePicker";
+import { DateRange } from "react-day-picker";
 
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,13 +16,12 @@ import { addDays } from "date-fns";
 import {
   workExperienceFormSchema,
   WorkExperienceFormType,
-} from "@/utils/types/workExperience";
+} from "@/utils/types/";
 import {
   getWorkExperienceItemAction,
   updateWorkExperienceItemAction,
 } from "@/utils/actions/";
 import { useToast } from "@/hooks/use-toast";
-import { DateRange } from "react-day-picker";
 
 const EditWorkExperienceForm = ({
   workExperienceId,
