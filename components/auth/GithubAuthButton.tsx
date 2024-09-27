@@ -27,7 +27,7 @@ const GithubAuthButton = () => {
     queryKey: ["developer", userId],
     queryFn: () =>
       developerGithubLoginCallbackAction(callbackParams).then((result) => {
-        if (result?.$id) {
+        if (!result?.error) {
           window.location.replace("/posts");
         }
         return result;

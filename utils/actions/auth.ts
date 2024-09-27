@@ -26,7 +26,7 @@ const authenticateAndRedirect = async () => {
   return developer;
 };
 
-// signup
+// EMAIL/PASSWORD signup
 const developerSignupAction = async (
   values: SignupFormType,
 ): Promise<{
@@ -58,7 +58,7 @@ const developerSignupAction = async (
   }
 };
 
-// login
+// EMAIL/PASSWORD login
 const developerLoginAction = async (
   values: LoginFormType,
 ): Promise<{
@@ -113,17 +113,25 @@ const developerGithubLoginCallbackAction = async ({
 }: {
   userId?: string;
   secret?: string;
-}): Promise<DeveloperType | null> => {
+}): Promise<{
+  data?: DeveloperType;
+  error?: string;
+}> => {
   if (!userId || !secret) {
-    return null;
+    return {
+      error: "Missing userId and secret",
+    };
   }
   try {
     await auth.githubAuthCallback({ userId, secret });
     const developer = await getAuthenticatedDeveloper();
-    return developer;
+    return { data: developer as DeveloperType };
   } catch (error) {
     console.error(error);
-    return null;
+    return {
+      error:
+        "We encountered an error authorizing your Github account. Please use Email/Password Authentication.",
+    };
   }
 };
 
