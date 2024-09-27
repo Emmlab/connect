@@ -50,7 +50,11 @@ const ProfileNavigation = () => {
           <Button
             asChild
             variant={
-              pathname === (developerId ? link.routePublic : link.routePrivate)
+              pathname ===
+                (developerId ? link.routePublic : link.routePrivate) ||
+              (developerId ? link.routePublic : link.routePrivate).includes(
+                pathname,
+              )
                 ? "outline"
                 : "link"
             }
@@ -63,13 +67,6 @@ const ProfileNavigation = () => {
               {link.icon}
               <span>{link.name}</span>
             </div>
-            {/* <Link
-              href={developerId ? link.routePublic : link.routePrivate}
-              className="flex items-center gap-2"
-            >
-              {link.icon}
-              <span>{link.name}</span>
-            </Link> */}
           </Button>
         ))}
       </div>

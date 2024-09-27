@@ -1,12 +1,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import Image from "next/image";
 import CustomButton from "@/components/layout/FormComponents/CustomButton";
 import { ThumbsUp, ThumbsDown, MessageCircle, Trash2 } from "lucide-react";
@@ -16,12 +10,8 @@ import Avvvatars from "avvvatars-react";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import {
-  deletePostAction,
-  postLikeAction,
-  postDisLikeAction,
-} from "@/utils/actions/";
-import { PostCommentType, PostType } from "@/utils/types/";
+import { deletePostAction, postLikeDisLikeAction } from "@/utils/actions/";
+import { PostType } from "@/utils/types/";
 import { format } from "date-fns";
 import reaper from "@/assets/reaper.png";
 
@@ -31,43 +21,18 @@ const PostCard = ({ post }: { post: PostType }) => {
   const queryClient = useQueryClient();
   const [showComments, setShowComments] = React.useState(false);
 
-  // handle like post
-  const { mutate: mutateLikePost, isPending: isPendingLikePost } = useMutation({
-    mutationFn: (id: string) =>
-      postLikeAction({
-        postId: id,
-        isLiked: post.liked,
-        isDisLiked: post.disLiked,
-        likesCount: post.likesCount,
-        disLikesCount: post.disLikesCount,
-      }),
-    onSuccess: (data) => {
-      if (data?.error) {
-        toast({
-          description: data?.error,
-        });
-        return;
-      }
-      // update posts data
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-    },
-  });
-
-  // handle dis like post
-  const { mutate: mutateDisLikePost, isPending: isPendingDisLikePost } =
+  // handle like/dislike post
+  const { mutate: mutateLikeDislikePost, isPending: isPendingLikeDislikePost } =
     useMutation({
-      mutationFn: (id: string) =>
-        postDisLikeAction({
-          postId: id,
-          isLiked: post.liked,
-          isDisLiked: post.disLiked,
-          likesCount: post.likesCount,
-          disLikesCount: post.disLikesCount,
+      mutationFn: (isLiking: boolean) =>
+        postLikeDisLikeAction({
+          post,
+          isLiking,
         }),
       onSuccess: (data) => {
         if (data?.error) {
           toast({
-            description: data.error,
+            description: data?.error,
           });
           return;
         }
@@ -109,7 +74,7 @@ const PostCard = ({ post }: { post: PostType }) => {
 
   return (
     <Card className="bg-muted drop-shadow-md">
-      <CardHeader className="flex gap-2">
+      <CardHeader className="flex gap-2 pb-3">
         <CardTitle className="flex items-center justify-between">
           <div
             className="flex items-center gap-2 cursor-pointer"
@@ -124,7 +89,7 @@ const PostCard = ({ post }: { post: PostType }) => {
                 />
               ) : (
                 <div
-                  className={`${isPendingDeletePost || isPendingLikePost || isPendingDisLikePost ? "animate-spin" : ""}`}
+                  className={`${isPendingDeletePost || isPendingLikeDislikePost ? "animate-spin" : ""}`}
                 >
                   <Avvvatars
                     style="shape"
@@ -139,13 +104,12 @@ const PostCard = ({ post }: { post: PostType }) => {
             </div>
             <div className="flex flex-col">
               <div className="line-clamp-1 text-base">
-                {post.developerName || "Anonymous"}
+                {post.developerName || "Unknown"}
               </div>
-              <div className="text-sm font-normal">
-                Posted on{" "}
-                <i className="text-xs">
+              <div className="text-sm font-normal italic">
+                <span className="text-xs">
                   {format(post.$createdAt, "LLL dd, y")}
-                </i>
+                </span>
               </div>
             </div>
           </div>
@@ -166,52 +130,51 @@ const PostCard = ({ post }: { post: PostType }) => {
       </CardHeader>
       <CardContent className="">
         <div className="">{post.message}</div>
-        <div className="flex items-center gap-2 my-2">
+        <div className="flex items-center gap-2 mt-4">
           {/* like post button */}
-          {!isPendingDisLikePost ? (
-            <CustomButton
-              icon={
-                <ThumbsUp className={`${post.liked ? "text-red-500" : ""}`} />
-              }
-              text={`${post.likesCount}`}
-              handleClick={() => mutateLikePost(post.$id)}
-              isPending={isPendingLikePost}
-              className="h-fit w-fit px-2 py-1 gap-1"
-            />
-          ) : null}
+          <CustomButton
+            icon={
+              <ThumbsUp className={`${post.liked ? "text-red-500" : ""}`} />
+            }
+            text={`${post.likedBy.length}`}
+            handleClick={() => mutateLikeDislikePost(true)}
+            isPending={isPendingLikeDislikePost}
+            className="h-fit w-fit px-2 py-1 gap-1"
+          />
           {/* dislike post button */}
-          {!isPendingLikePost ? (
-            <CustomButton
-              icon={
-                <ThumbsDown
-                  className={`${post.disLiked ? "text-red-500" : ""}`}
-                />
-              }
-              text={`${post.disLikesCount}`}
-              handleClick={() => mutateDisLikePost(post.$id)}
-              isPending={isPendingDisLikePost}
-              className="h-fit w-fit px-2 py-1 gap-1"
-            />
-          ) : null}
+          <CustomButton
+            icon={
+              <ThumbsDown
+                className={`${post.disLiked ? "text-red-500" : ""}`}
+              />
+            }
+            text={`${post.disLikedBy.length}`}
+            handleClick={() => mutateLikeDislikePost(false)}
+            isPending={isPendingLikeDislikePost}
+            className="h-fit w-fit px-2 py-1 gap-1"
+          />
 
           {/* toggle comments */}
           <CustomButton
             icon={<MessageCircle />}
-            text={`${post?.comments?.length ?? 0}`}
+            text={`${post?.commentCount || 0}`}
             handleClick={() => setShowComments(!showComments)}
             isPending={false}
             className="h-fit w-fit px-2 py-1 gap-1"
           />
         </div>
         {showComments ? (
-          <div className="max-h-[300px] mt-4 overflow-y-scroll">
-            <CommentList comments={post.comments as PostCommentType[]} />
+          <div className="space-y-2">
+            <div className="max-h-[300px] mt-2 pb-2 overflow-y-scroll">
+              <CommentList postId={post.$id} />
+            </div>
+            <CreateCommentForm
+              postId={post.$id}
+              commentCount={post.commentCount}
+            />
           </div>
         ) : null}
       </CardContent>
-      <CardFooter className="flex flex-col gap-4">
-        <CreateCommentForm postId={post.$id} />
-      </CardFooter>
     </Card>
   );
 };

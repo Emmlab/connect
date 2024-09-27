@@ -13,7 +13,15 @@ import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import reaper from "@/assets/reaper.png";
 
-const CommentCard = ({ comment }: { comment: PostCommentType }) => {
+const CommentCard = ({
+  comment,
+  postId,
+  commentCount,
+}: {
+  comment: PostCommentType;
+  postId: string;
+  commentCount: number;
+}) => {
   const { toast } = useToast();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -23,7 +31,12 @@ const CommentCard = ({ comment }: { comment: PostCommentType }) => {
     mutate: mutateDeletePostComment,
     isPending: isPendingDeletePostComment,
   } = useMutation({
-    mutationFn: (id: string) => deletePostCommentAction({ id }),
+    mutationFn: () =>
+      deletePostCommentAction({
+        id: comment.$id as string,
+        postId,
+        commentCount,
+      }),
     onSuccess: (data) => {
       if (data?.error) {
         toast({
@@ -31,8 +44,9 @@ const CommentCard = ({ comment }: { comment: PostCommentType }) => {
         });
         return;
       }
-      // update post data
+      // update posts and postComments data
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["postComments", postId] });
       toast({ description: "Post Comment removed" });
     },
   });
@@ -81,7 +95,7 @@ const CommentCard = ({ comment }: { comment: PostCommentType }) => {
               <div className="line-clamp-1 text-base">
                 {comment.developerName}
               </div>
-              <div className="text-xs italic">
+              <div className="text-xs font-normal italic">
                 {format(comment.$createdAt, "LLL dd, y")}
               </div>
             </div>
@@ -92,9 +106,7 @@ const CommentCard = ({ comment }: { comment: PostCommentType }) => {
                 icon={<Trash2 className="h-[18px]" />}
                 text=""
                 className="h-fit w-fit px-2 py-1"
-                handleClick={() =>
-                  comment && mutateDeletePostComment(comment.$id as string)
-                }
+                handleClick={() => comment && mutateDeletePostComment()}
                 isPending={isPendingDeletePostComment}
                 isDelete
               />
