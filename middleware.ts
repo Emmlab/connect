@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import auth from "./utils/auth";
+import auth from "./utils/appwrite/auth";
 
 export async function middleware(request: {
   cookies: { delete: (arg0: string) => void };

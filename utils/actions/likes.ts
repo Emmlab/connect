@@ -1,84 +1,8 @@
 "use server";
-import {
-  PostCommentType,
-  postCommentFormSchema,
-} from "../types/postLikesComments";
 import { Query, ID } from "node-appwrite";
-import { createSessionClient } from "../appwrite";
-import auth from "../auth";
-import { authenticateAndRedirect } from "./developer";
-
-// POST LIKES/DISLIKES/COMMENTS
-// Post comment
-const createPostCommentAction = async ({
-  comment,
-  postId,
-}: {
-  comment: string;
-  postId: string;
-}): Promise<{
-  data?: PostCommentType;
-  error?: string;
-}> => {
-  const developer = await authenticateAndRedirect();
-  const sessionCookie = auth.getSession();
-  try {
-    postCommentFormSchema.parse({ comment, postId });
-    const data = {
-      comment,
-      post: postId, // relationship
-      developerId: developer.$id,
-    };
-    const { databases } = await createSessionClient(sessionCookie.value);
-    // fetch post comments
-    const responsePostCommentDocument = await databases.createDocument(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "PostComments",
-      ID.unique(),
-      data,
-    );
-    const postComment: PostCommentType = {
-      $id: responsePostCommentDocument.$id,
-      $createdAt: responsePostCommentDocument.$createdAt,
-      $updatedAt: responsePostCommentDocument.$updatedAt,
-      comment: responsePostCommentDocument.comment,
-      developerId: responsePostCommentDocument.developerId,
-      developerName: developer.name || "",
-      developerEmail: developer.email || "",
-      mine: developer?.$id === responsePostCommentDocument.developerId,
-    };
-
-    return { data: postComment };
-  } catch (error) {
-    console.error(error);
-    return { error: "Something went wrong." };
-  }
-};
-
-// Delete post comment
-const deletePostCommentAction = async ({
-  id,
-}: {
-  id: string;
-}): Promise<{
-  data?: string;
-  error?: string;
-}> => {
-  await authenticateAndRedirect();
-  const sessionCookie = auth.getSession();
-  try {
-    const { databases } = await createSessionClient(sessionCookie.value);
-    await databases.deleteDocument(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "PostComments",
-      id,
-    );
-    return { data: id };
-  } catch (error) {
-    console.error(error);
-    return { error: "Something went wrong." };
-  }
-};
+import { createSessionClient } from "../appwrite/";
+import auth from "../appwrite/auth";
+import { authenticateAndRedirect } from "./auth";
 
 // like post
 const postLikeAction = async ({
@@ -109,48 +33,50 @@ const postLikeAction = async ({
     // update likes count on post table
     let newLikesCount = likesCount;
     let newDisLikesCount = disLikesCount;
+
+    // get postLikeDislikeItem
+    const { documents: postLikeDislikeItem } = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
+      "Likes",
+      [
+        Query.equal("developerId", [developer.$id as string]),
+        Query.equal("post", [postId as string]),
+      ],
+    );
+
+    // update likes/dislikes and post like/dislike count
     if (isLiked) {
       // unlike
       // reduce like count
-      newLikesCount = newLikesCount - 1;
-      // get postLikeItem
-      const { documents: postLikeItem } = await databases.listDocuments(
-        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-        "PostLikes",
-        [
-          Query.equal("developerId", [developer.$id as string]),
-          Query.equal("post", [postId as string]),
-        ],
+      // get liked post like
+      const postLikeItem = postLikeDislikeItem.filter(
+        (item) => item.isLiked === true,
       );
-
+      newLikesCount = newLikesCount - 1;
       if (postLikeItem.length === 1) {
         // delete like item
         await databases.deleteDocument(
           process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-          "PostLikes",
-          postLikeItem[0].$id,
+          "Likes",
+          postLikeDislikeItem[0].$id,
         );
       }
+      postLikeItem;
     } else {
       // reduce disLike count if isDisLiked
       if (isDisLiked) {
         newDisLikesCount = newDisLikesCount - 1;
         // remove dislike
-        // get postDisLikeItem
-        const { documents: postDisLikeItem } = await databases.listDocuments(
-          process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-          "PostDisLikes",
-          [
-            Query.equal("developerId", [developer.$id as string]),
-            Query.equal("post", [postId as string]),
-          ],
+        // // get postDisLikeItem
+        const postDisLikeItem = postLikeDislikeItem.filter(
+          (item) => !item.isLiked,
         );
 
         if (postDisLikeItem.length === 1) {
           // delete dis like item
           await databases.deleteDocument(
             process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-            "PostDisLikes",
+            "Likes",
             postDisLikeItem[0].$id,
           );
         }
@@ -161,9 +87,9 @@ const postLikeAction = async ({
       // add like item
       await databases.createDocument(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-        "PostLikes",
+        "Likes",
         ID.unique(),
-        data,
+        { ...data, isLiked: true },
       );
     }
 
@@ -210,24 +136,28 @@ const postDisLikeAction = async ({
     // update dis likes count on post table
     let newDisLikesCount = disLikesCount;
     let newLikesCount = likesCount;
+
+    // get postLikeDisLikeItem
+    const { documents: postLikeDisLikeItem } = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
+      "Likes",
+      [
+        Query.equal("developerId", [developer.$id as string]),
+        Query.equal("post", [postId as string]),
+      ],
+    );
+
     if (isDisLiked) {
       // update dis like count
       newDisLikesCount = newDisLikesCount - 1;
-      // get postDisLikeItem
-      const { documents: postDisLikeItem } = await databases.listDocuments(
-        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-        "PostDisLikes",
-        [
-          Query.equal("developerId", [developer.$id as string]),
-          Query.equal("post", [postId as string]),
-        ],
+      const postDisLikeItem = postLikeDisLikeItem.filter(
+        (item) => !item.isLiked,
       );
-
       if (postDisLikeItem.length === 1) {
         // delete dis like item
         await databases.deleteDocument(
           process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-          "PostDisLikes",
+          "Likes",
           postDisLikeItem[0].$id,
         );
       }
@@ -237,20 +167,13 @@ const postDisLikeAction = async ({
         // unlike
         newLikesCount = newLikesCount - 1;
         // get postLikeItem
-        const { documents: postLikeItem } = await databases.listDocuments(
-          process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-          "PostLikes",
-          [
-            Query.equal("developerId", [developer.$id as string]),
-            Query.equal("post", [postId as string]),
-          ],
-        );
+        const postLikeItem = postLikeDisLikeItem.filter((item) => item.isLiked);
 
         if (postLikeItem.length === 1) {
           // delete like item
           await databases.deleteDocument(
             process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-            "PostLikes",
+            "Likes",
             postLikeItem[0].$id,
           );
         }
@@ -261,9 +184,9 @@ const postDisLikeAction = async ({
       // add dis like item
       await databases.createDocument(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-        "PostDisLikes",
+        "Likes",
         ID.unique(),
-        data,
+        { ...data, isLiked: false },
       );
     }
 
@@ -281,10 +204,4 @@ const postDisLikeAction = async ({
   }
 };
 
-export {
-  // POST LIKES/DISLIKE/COMMENTS
-  createPostCommentAction,
-  deletePostCommentAction,
-  postLikeAction,
-  postDisLikeAction,
-};
+export { postLikeAction, postDisLikeAction };

@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -20,11 +21,9 @@ import {
   postLikeAction,
   postDisLikeAction,
 } from "@/utils/actions/";
-import { PostCommentType } from "@/utils/types/postLikesComments";
-import { PostType } from "@/utils/types/posts";
+import { PostCommentType, PostType } from "@/utils/types/";
 import { format } from "date-fns";
 import reaper from "@/assets/reaper.png";
-import { useRouter } from "next/navigation";
 
 const PostCard = ({ post }: { post: PostType }) => {
   const { toast } = useToast();

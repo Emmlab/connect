@@ -1,14 +1,15 @@
 import React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CustomButton from "@/components/layout/FormComponents/CustomButton";
-import { BriefcaseBusiness, Pencil, Trash2 } from "lucide-react";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteWorkExperienceItemAction } from "@/utils/actions/";
-import { WorkExperienceType } from "@/utils/types/workExperience";
+import { WorkExperienceType } from "@/utils/types/";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import { BriefcaseBusiness, Pencil, Trash2 } from "lucide-react";
 
 const WorkExperienceCard = ({
   workExperienceItem,

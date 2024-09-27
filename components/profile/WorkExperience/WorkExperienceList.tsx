@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
-import PaginationContainer from "../../layout/PaginationContainer";
+import PaginationContainer from "@/components/layout/PaginationContainer";
+import NothingtoShow from "@/components/layout/NothingtoShow";
 import WorkExperienceCard from "./WorkExperienceCard";
 import WorkExperienceCardSkeleton from "../Education/EducationCardSkeleton";
-import NothingtoShow from "../../layout/NothingtoShow";
 
 import { useSearchParams } from "next/navigation";
-import { getWorkExperienceAction } from "@/utils/actions/workExperience";
+import { getWorkExperienceAction } from "@/utils/actions/";
 import { useQuery } from "@tanstack/react-query";
 
 const WorkExperienceList = () => {

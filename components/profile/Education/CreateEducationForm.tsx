@@ -9,10 +9,7 @@ import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  educationFormSchema,
-  EducationFormType,
-} from "@/utils/types/education";
+import { educationFormSchema, EducationFormType } from "@/utils/types/";
 import { createEducationAction } from "@/utils/actions/";
 import { DateRange } from "react-day-picker";
 import { useToast } from "@/hooks/use-toast";

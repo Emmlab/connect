@@ -1,13 +1,13 @@
 "use client";
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ProfileNavigation from "../ProfileNavigation";
 import GithubRepositoriesList from "./GithubRepositoriesList";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-import { getDeveloper } from "@/utils/actions/developer";
+import { getAuthenticatedDeveloper } from "@/utils/actions/";
 import { Plus } from "lucide-react";
 
 const GithubRepositories = () => {
@@ -16,7 +16,7 @@ const GithubRepositories = () => {
   // get developer
   const { data: developer } = useQuery({
     queryKey: ["developer", 1],
-    queryFn: () => getDeveloper(),
+    queryFn: () => getAuthenticatedDeveloper(),
   });
   // use email from params if there
   // email on params allows public access

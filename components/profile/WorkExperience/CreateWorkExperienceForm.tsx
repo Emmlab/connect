@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import CustomButton from "@/components/layout/FormComponents/CustomButton";
 import CustomFormField from "@/components/layout/FormComponents/CustomFormField";
 import CustomDateRangePicker from "@/components/layout/FormComponents/CustomDateRangePicker";
@@ -13,11 +13,11 @@ import { useForm } from "react-hook-form";
 import {
   workExperienceFormSchema,
   WorkExperienceFormType,
-} from "@/utils/types/workExperience";
+} from "@/utils/types/";
 import { createWorkExperienceAction } from "@/utils/actions/";
 import { useToast } from "@/hooks/use-toast";
 import { DateRange } from "react-day-picker";
-import { useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
 
 const CreateWorkExperienceForm = () => {
   const queryClient = useQueryClient();

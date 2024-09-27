@@ -1,15 +1,16 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 
 import { Form } from "@/components/ui/form";
 import CustomButton from "@/components/layout/FormComponents/CustomButton";
 import CustomFormField from "@/components/layout/FormComponents/CustomFormField";
+import GithubAuthButton from "./GithubAuthButton";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { signupFormSchema, SignupFormType } from "@/utils/types/developer";
+import { signupFormSchema, SignupFormType } from "@/utils/types/";
 import { developerSignupAction } from "@/utils/actions/";
 import { useToast } from "@/hooks/use-toast";
 
@@ -78,6 +79,9 @@ const SignupForm = () => {
             text={"Signup"}
             size="lg"
           />
+          <Suspense>
+            <GithubAuthButton />
+          </Suspense>
           <div className="my-4">
             Already have an account?{" "}
             <Link href="/login" className="font-semibold">

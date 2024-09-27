@@ -1,9 +1,10 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import NavbarLinksDropdown from "./NavbarLinksDropdown";
 import NavbarLinks from "./NavbarLinks";
-import { getDeveloper } from "@/utils/actions";
+import { getAuthenticatedDeveloper } from "@/utils/actions";
 import { useQuery } from "@tanstack/react-query";
 
 const Navbar = () => {
@@ -11,7 +12,7 @@ const Navbar = () => {
   // get developer data
   const { data: developerData } = useQuery({
     queryKey: ["developer", 1],
-    queryFn: () => getDeveloper(),
+    queryFn: () => getAuthenticatedDeveloper(),
   });
 
   const protectedRoutes = ["/posts", "/developers"];

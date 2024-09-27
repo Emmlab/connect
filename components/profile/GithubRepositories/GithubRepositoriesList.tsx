@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import { getGithubDeveloperRepositories } from "@/utils/actions/";
 import { useQuery } from "@tanstack/react-query";
+import { getDeveloperGithubRepositories } from "@/utils/actions/";
 
 import GithubRepositoriesCard from "./GithubRepositoriesCard";
 import GithubRepositoriesCardSkeleton from "./GithubRepositoriesCardSkeleton";
-import NothingtoShow from "../../layout/NothingtoShow";
+import NothingtoShow from "@/components/layout/NothingtoShow";
 
 const GithubRepositoriesList = ({
   developerEmail,
@@ -19,7 +19,7 @@ const GithubRepositoriesList = ({
   } = useQuery({
     queryKey: ["repositories", developerEmail],
     queryFn: () =>
-      getGithubDeveloperRepositories({ email: developerEmail as string }),
+      getDeveloperGithubRepositories({ email: developerEmail as string }),
     enabled: !!developerEmail,
   });
 

@@ -10,10 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { createPostCommentAction } from "@/utils/actions/";
-import {
-  postCommentFormSchema,
-  PostCommentFormType,
-} from "@/utils/types/postLikesComments";
+import { postCommentFormSchema, PostCommentFormType } from "@/utils/types/";
 
 const CreateCommentForm = ({ postId }: { postId: string }) => {
   const queryClient = useQueryClient();

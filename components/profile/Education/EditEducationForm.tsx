@@ -11,15 +11,12 @@ import CustomDateRangePicker from "@/components/layout/FormComponents/CustomDate
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  educationFormSchema,
-  EducationFormType,
-} from "@/utils/types/education";
+import { educationFormSchema, EducationFormType } from "@/utils/types/";
 import {
   getEducationItemAction,
   updateEducationItemAction,
 } from "@/utils/actions/";
-import { useToast } from "../../../hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import Avvvatars from "avvvatars-react";
 import { useQuery } from "@tanstack/react-query";
-import { getDeveloper } from "@/utils/actions/developer";
+import { getAuthenticatedDeveloper } from "@/utils/actions/";
 import { usePathname } from "next/navigation";
 
 const NavbarAvatar = () => {
@@ -10,7 +10,7 @@ const NavbarAvatar = () => {
   // get developer
   const { data: developer } = useQuery({
     queryKey: ["developer", 1],
-    queryFn: () => getDeveloper(),
+    queryFn: () => getAuthenticatedDeveloper(),
   });
 
   React.useEffect(() => {

@@ -1,12 +1,17 @@
 "use server";
-import { PostType, PostFormType, postFormSchema } from "../types/posts";
-import { DeveloperType } from "../types/developer";
-import { PostCommentType } from "../types/postLikesComments";
+import {
+  PostType,
+  PostFormType,
+  postFormSchema,
+  DeveloperType,
+  PostCommentType,
+} from "../types/";
 import { Query, ID } from "node-appwrite";
-import { createSessionClient } from "../appwrite";
-import auth from "../auth";
-import { authenticateAndRedirect, getDevelopersAction } from "./developer";
+import { createSessionClient } from "../appwrite/";
+import auth from "../appwrite/auth";
+import { getDevelopersAction } from "./developer";
 import { DEFAULT_PAGE_LIMIT } from "../magicValues";
+import { authenticateAndRedirect } from "./auth";
 
 // POSTS
 // Get post
@@ -26,38 +31,55 @@ const getPostsAction = async ({
   const sessionCookie = auth.getSession();
   const developer = await authenticateAndRedirect();
   try {
-    const queries = [
-      Query.orderDesc("$createdAt"),
-      Query.limit(DEFAULT_PAGE_LIMIT),
-      Query.offset((page - 1) * DEFAULT_PAGE_LIMIT),
-    ];
-
     const { databases } = await createSessionClient(sessionCookie.value);
     // fetch posts
     const { documents: postsDocuments, total } = await databases.listDocuments(
       process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
       "Posts",
-      queries,
+      [
+        Query.orderDesc("$createdAt"),
+        Query.limit(DEFAULT_PAGE_LIMIT),
+        Query.offset((page - 1) * DEFAULT_PAGE_LIMIT),
+      ],
     );
     const postIds = postsDocuments.map((post) => post.$id);
 
-    // Fetch post likes
-    const { documents: userLikes } = await databases.listDocuments(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "PostLikes",
-      [Query.equal("post", postIds)],
+    // Fetch post likes and dislikes
+    const { documents: userLikesDislikesDocuments } =
+      await databases.listDocuments(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
+        "Likes",
+        [Query.equal("post", postIds)],
+      );
+    const userLikesDislikes:
+      | {
+          developerId: string;
+          post: PostType;
+          isLiked: boolean;
+        }[]
+      | [] = userLikesDislikesDocuments.map(
+      (userLikesDislikesDocumentsItem) => {
+        return {
+          developerId: userLikesDislikesDocumentsItem.developerId,
+          post: userLikesDislikesDocumentsItem.post,
+          isLiked: userLikesDislikesDocumentsItem.isLiked,
+        };
+      },
     );
-    // array of liked post IDs
-    const likedPostIds = userLikes.map((like) => like.post.$id);
 
-    // Fetch post dislikes
-    const { documents: userDisLikes } = await databases.listDocuments(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
-      "PostDisLikes",
-      [Query.equal("post", postIds)],
-    );
+    // array of liked post IDs
+    const likedPostIds: (string | undefined)[] = [];
     // array of disliked post IDs
-    const disLikedPostIds = userDisLikes.map((disLike) => disLike.post.$id);
+    const disLikedPostIds: (string | undefined)[] = [];
+    userLikesDislikes.map((like) => {
+      if (like.isLiked) {
+        likedPostIds.push(like.post.$id);
+        return like.post.$id;
+      } else {
+        disLikedPostIds.push(like.post.$id);
+        return like.post.$id;
+      }
+    });
 
     // Fetch post comments
     const { documents: postCommentsDocuments } = await databases.listDocuments(
