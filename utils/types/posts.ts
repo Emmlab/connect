@@ -7,15 +7,15 @@ export type PostType = {
   $createdAt: string;
   $updatedAt: string;
   message: string;
-  likesCount: number;
-  disLikesCount: number;
   developerId: string;
   developerName: string;
   developerEmail: string;
   liked: boolean;
   disLiked: boolean;
+  likedBy: string[];
+  disLikedBy: string[];
   mine: boolean;
-  comments?: PostCommentType[];
+  commentCount: number;
 };
 
 export type PostFormType = z.infer<typeof postFormSchema>;

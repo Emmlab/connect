@@ -12,7 +12,13 @@ import { useForm } from "react-hook-form";
 import { createPostCommentAction } from "@/utils/actions/";
 import { postCommentFormSchema, PostCommentFormType } from "@/utils/types/";
 
-const CreateCommentForm = ({ postId }: { postId: string }) => {
+const CreateCommentForm = ({
+  postId,
+  commentCount,
+}: {
+  postId: string;
+  commentCount: number;
+}) => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
 
@@ -27,7 +33,11 @@ const CreateCommentForm = ({ postId }: { postId: string }) => {
   // handle create post comment
   const { mutate, isPending } = useMutation({
     mutationFn: (values: PostCommentFormType) =>
-      createPostCommentAction({ comment: values.comment, postId }),
+      createPostCommentAction({
+        comment: values.comment,
+        postId,
+        commentCount,
+      }),
     onSuccess: (data) => {
       if (data?.error) {
         toast({
@@ -36,8 +46,9 @@ const CreateCommentForm = ({ postId }: { postId: string }) => {
         return;
       }
       toast({ description: "Comment added successfully" });
-      // update posts data
+      // update posts && comments data
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["postComments", postId] });
       // clear form
       form.reset();
     },

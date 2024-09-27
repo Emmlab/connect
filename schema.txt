@@ -5,12 +5,7 @@
     Required: true
     Default Value: '-' // leave empty
   
-  likesCount: 
-    Type: String
-    Required: true
-    Default Value: '-' // leave empty
-  
-  disLikesCount: 
+  commentCount: 
     Type: String
     Required: true
     Default Value: '-' // leave empty
@@ -19,7 +14,17 @@
     Type: String
     Required: true
     Default Value: '-' // leave empty
-  
+
+  likedBy: 
+    Type: String[]
+    Required: false
+    Default Value: '-' // leave empty
+
+  disLikedBy: 
+    Type: String[]
+    Required: false
+    Default Value: '-' // leave empty
+
 
 // PostComments attributes
   comment: 
@@ -39,29 +44,6 @@
     On deleting a document: Cascade - delete all realated documents
     Required: false
     Default Value: '-' // leave empty
-  
-
-
-// Likes attributes
-  developerId: 
-    Type: String
-    Required: true
-    Default Value: '-' // leave empty
-  
-  post: 
-    Type: One-Way Relationship > Relationship with post
-    Related collection: posts
-    Relation: Many to one
-    On deleting a document: Cascade - delete all realated documents
-    Required: false
-    Default Value: '-' // leave empty
-  
-  isLiked: 
-    Type: Boolean
-    Required: true
-    Default Value: false
-  
-
 
 // WorkExperience attributes
   company: 

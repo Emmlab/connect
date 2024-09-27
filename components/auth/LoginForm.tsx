@@ -49,6 +49,15 @@ const LoginForm = () => {
         className="bg-muted rounded-md p-8 w-[95%] md:w-[70%] lg:w-[45%] mx-auto"
       >
         <h2 className="capitalize font-semibold text-4xl mb-6">Login</h2>
+        <Suspense>
+          <GithubAuthButton />
+        </Suspense>
+        <div className="py-2 flex items-center space-x-2">
+          <h1 className="flex-grow h-[1px] bg-slate-300 my-4" />
+          <div className="">Or</div>
+          <h1 className="flex-grow h-[1px] bg-slate-300 my-4" />
+        </div>
+
         <div className="flex flex-col gap-2">
           <CustomFormField
             inputType="email"
@@ -67,9 +76,7 @@ const LoginForm = () => {
             text={"Login"}
             size="lg"
           />
-          <Suspense>
-            <GithubAuthButton />
-          </Suspense>
+
           <div className="my-4">
             Don&apos;t have an account?{" "}
             <Link href="/signup" className="font-semibold">

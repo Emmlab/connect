@@ -56,7 +56,7 @@ const GithubAuthButton = () => {
     <div className="">
       <CustomButton
         icon={<Github />}
-        text="Github Authentication"
+        text="Github (Recommended)"
         className="mt-4 w-full"
         size="lg"
         handleClick={() => mutateDeveloperGithubLogin()}
