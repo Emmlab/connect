@@ -186,7 +186,7 @@ const postDisLikeAction = async ({
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string,
         "Likes",
         ID.unique(),
-        data,
+        { ...data, isLiked: false },
       );
     }
 

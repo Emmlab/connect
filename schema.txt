@@ -42,7 +42,7 @@
   
 
 
-// PostLikes attributes
+// Likes attributes
   developerId: 
     Type: String
     Required: true
@@ -56,21 +56,10 @@
     Required: false
     Default Value: '-' // leave empty
   
-
-
-// PostDisLikes attributes
-  developerId: 
-    Type: String
+  isLiked: 
+    Type: Boolean
     Required: true
-    Default Value: '-' // leave empty
-  
-  post: 
-    Type: One-Way Relationship > Relationship with post
-    Related collection: posts
-    Relation: Many to one
-    On deleting a document: Cascade - delete all realated documents
-    Required: false
-    Default Value: '-' // leave empty
+    Default Value: false
   
 
 
